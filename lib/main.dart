@@ -16,17 +16,15 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-            appBarTheme: const AppBarTheme(
-              color: Color(0xfff5f5f5),
-            ),
+            appBarTheme:
+                const AppBarTheme(color: Color.fromRGBO(241, 241, 241, 1)),
             useMaterial3: true,
-            scaffoldBackgroundColor: const Color(0xfff5f5f5)),
+            scaffoldBackgroundColor: const Color.fromRGBO(241, 241, 241, 1)),
         home: const MainNavBar());
   }
 }

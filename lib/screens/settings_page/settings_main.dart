@@ -21,7 +21,7 @@ class _SettingsMainState extends State<SettingsMain> {
             color: Color.fromRGBO(112, 182, 1, 1),
             fontFamily: 'MuseoModerno',
             fontWeight: FontWeight.bold,
-            fontSize: 30,
+            fontSize: 27,
           ),
         ),
         body: const Padding(

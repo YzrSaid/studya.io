@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:ui';
 
 class SettingsSounds extends StatefulWidget {
   const SettingsSounds({super.key});

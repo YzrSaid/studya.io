@@ -19,7 +19,7 @@ class _FlashcardsState extends State<FlashcardsMain> {
             color: Color.fromRGBO(112, 182, 1, 1),
             fontFamily: 'MuseoModerno',
             fontWeight: FontWeight.bold,
-            fontSize: 30,
+            fontSize: 27,
           ),
         ),
 

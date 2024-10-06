@@ -19,20 +19,27 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.5.1
+  sdk: ^3.5.1 
 
 dependencies:
   provider:
   google_fonts:
   flutter:
     sdk: flutter
-
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
+  flutter_launcher_icons: "^0.13.1"
   cupertino_icons: ^1.0.8
   google_nav_bar: ^5.0.6
   url_launcher: ^6.0.20
+  dropdown_textfield: ^1.2.0
+  auto_size_text: ^3.0.0
+  quickalert: ^1.1.0
+  awesome_dialog: ^3.2.1
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
 
 dev_dependencies:
   flutter_test:
@@ -56,43 +63,49 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - assets/logo.png
-    - assets/read.png
-    - assets/logo_small.png
+    - assets/images/
+
 
   fonts:
     - family: MuseoModerno
       fonts:
-        - asset: assets/MuseoModerno-Bold.ttf
-        - asset: assets/MuseoModerno-VariableFont_wght.ttf
-        - asset: assets/MuseoModerno-Black.ttf
-        - asset: assets/MuseoModerno-BlackItalic.ttf
-        - asset: assets/MuseoModerno-BoldItalic.ttf
-        - asset: assets/MuseoModerno-ExtraBold.ttf
-        - asset: assets/MuseoModerno-ExtraBoldItalic.ttf
-        - asset: assets/MuseoModerno-ExtraLight.ttf
-        - asset: assets/MuseoModerno-ExtraLightItalic.ttf
-        - asset: assets/MuseoModerno-Italic.ttf
-        - asset: assets/MuseoModerno-Light.ttf
-        - asset: assets/MuseoModerno-LightItalic.ttf
-        - asset: assets/MuseoModerno-Medium.ttf
-        - asset: assets/MuseoModerno-MediumItalic.ttf
-        - asset: assets/MuseoModerno-Regular.ttf
-        - asset: assets/MuseoModerno-SemiBold.ttf
-        - asset: assets/MuseoModerno-SemiBoldItalic.ttf
-        - asset: assets/MuseoModerno-Thin.ttf
-        - asset: assets/MuseoModerno-ThinItalic.ttf
+        - asset: assets/fonts/MuseoModerno-Bold.ttf
+        - asset: assets/fonts/MuseoModerno-VariableFont_wght.ttf
+        - asset: assets/fonts/MuseoModerno-Black.ttf
+        - asset: assets/fonts/MuseoModerno-BlackItalic.ttf
+        - asset: assets/fonts/MuseoModerno-BoldItalic.ttf
+        - asset: assets/fonts/MuseoModerno-ExtraBold.ttf
+        - asset: assets/fonts/MuseoModerno-ExtraBoldItalic.ttf
+        - asset: assets/fonts/MuseoModerno-ExtraLight.ttf
+        - asset: assets/fonts/MuseoModerno-ExtraLightItalic.ttf
+        - asset: assets/fonts/MuseoModerno-Italic.ttf
+        - asset: assets/fonts/MuseoModerno-Light.ttf
+        - asset: assets/fonts/MuseoModerno-LightItalic.ttf
+        - asset: assets/fonts/MuseoModerno-Medium.ttf
+        - asset: assets/fonts/MuseoModerno-MediumItalic.ttf
+        - asset: assets/fonts/MuseoModerno-Regular.ttf
+        - asset: assets/fonts/MuseoModerno-SemiBold.ttf
+        - asset: assets/fonts/MuseoModerno-SemiBoldItalic.ttf
+        - asset: assets/fonts/MuseoModerno-Thin.ttf
+        - asset: assets/fonts/MuseoModerno-ThinItalic.ttf
 
     - family: Montserrat
       fonts:
-        - asset: assets/Montserrat-Bold.ttf
-        - asset: assets/Montserrat-Regular.ttf
+        - asset: assets/fonts/Montserrat-Bold.ttf
+        - asset: assets/fonts/Montserrat-Regular.ttf
 
-  # To add assets to your application,
-  # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+    - family:  CustomNavBarIcons
+      fonts:
+       - asset: assets/custom_nav_bar_icons/fonts/CustomNavBarIcons.ttf
+    
+    - family:  CustomIcons
+      fonts:
+       - asset: assets/custom_icons/fonts/CustomIcons.ttf
+
+    - family:  CustomTimerIcons
+      fonts:
+       - asset: assets/custom_timer_icons/fonts/CustomTimerIcons.ttf
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
