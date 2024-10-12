@@ -9,8 +9,8 @@ This app will help the students to manage their daily tasks by setting specific 
 
 Students can also design and create personalized flashcards to enhance their learning.
 
-## Developers:
-## Mohammad Aldrin Said
-## John Basil Andre Mula
+#### Developers:
+##### Mohammad Aldrin Said
+##### John Basil Andre Mula
 
 
