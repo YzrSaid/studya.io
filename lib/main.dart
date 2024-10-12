@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:studya_io/models/additionalsettings_model.dart';
+import 'package:studya_io/models/settings_model.dart';
 import 'package:studya_io/screens/main_nav_bar.dart';
 import 'package:flutter/services.dart';
 
@@ -10,7 +13,16 @@ void main() {
     // DeviceOrientation.landscapeLeft,
     // DeviceOrientation.landscapeRight,
   ]);
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        //These are the providers/models that will be used in the app
+        ChangeNotifierProvider(create: (context) => AdditionalSettingsModel()),
+        ChangeNotifierProvider(create: (context) => SettingsModel()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

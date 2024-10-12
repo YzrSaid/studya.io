@@ -26,7 +26,7 @@ dependencies:
   google_fonts:
   flutter:
     sdk: flutter
-  flutter_launcher_icons: "^0.13.1"
+  flutter_launcher_icons: ^0.14.1
   cupertino_icons: ^1.0.8
   google_nav_bar: ^5.0.6
   url_launcher: ^6.0.20
@@ -34,6 +34,9 @@ dependencies:
   auto_size_text: ^3.0.0
   quickalert: ^1.1.0
   awesome_dialog: ^3.2.1
+  flutter_switch: ^0.3.2
+  audioplayers: ^6.1.0
+  volume_control: ^0.1.5
 
 flutter_launcher_icons:
   android: "launcher_icon"
@@ -50,7 +53,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -64,6 +67,11 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/alarm_sounds/
+    - assets/alarm_sounds/default_alarm_sound.mp3
+    - assets/alarm_sounds/digital_beep_alarm_sound.mp3
+    - assets/alarm_sounds/bliss_alarm_sound.mp3
+    - assets/alarm_sounds/classic_alarm_sound.mp3
 
 
   fonts:
@@ -91,8 +99,28 @@ flutter:
 
     - family: Montserrat
       fonts:
-        - asset: assets/fonts/Montserrat-Bold.ttf
         - asset: assets/fonts/Montserrat-Regular.ttf
+          weight: 400
+
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/Montserrat-Bold.ttf  
+        - asset: assets/fonts/MontserratLight.ttf
+
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/MontserratExtraBold.ttf
+          weight: 800
+
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/MontserratSemiBold.ttf
+          weight: 600
+
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/MontserratMedium.ttf
+          weight: 500
 
     - family:  CustomNavBarIcons
       fonts:

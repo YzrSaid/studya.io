@@ -2,15 +2,15 @@
 
 A new Flutter project.
 
-## Getting Started
+Features: 
+This app will help students optimize their study sessions by integrating a very well known study technique called, Pomodoro Technique. 
 
-This project is a starting point for a Flutter application.
+This app will help the students to manage their daily tasks by setting specific time allotments and create study schedules or study sessions.
 
-A few resources to get you started if this is your first Flutter project:
+Students can also design and create personalized flashcards to enhance their learning.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Developers:
+## Mohammad Aldrin Said
+## John Basil Andre Mula
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+

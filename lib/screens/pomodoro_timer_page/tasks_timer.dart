@@ -445,6 +445,7 @@ class _TasksTimerState extends State<TasksTimer> {
   }
 
   void _showSuccessDialog() {
+    // Lets use switch 
     AwesomeDialog(
       width: 405,
       buttonsBorderRadius: BorderRadius.circular(10),
