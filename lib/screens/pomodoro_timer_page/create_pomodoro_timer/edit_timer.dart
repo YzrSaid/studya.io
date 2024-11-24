@@ -3,16 +3,26 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:studya_io/screens/pomodoro_timer_page/create_pomodoro_timer/boxes.dart';
 import 'package:studya_io/screens/pomodoro_timer_page/create_pomodoro_timer/hive_model.dart';
 
-class CreateTimer extends StatefulWidget {
-  const CreateTimer({
-    super.key,
-  });
+class EditTimer extends StatefulWidget {
+  final String editStudSessionName;
+  final String editSelectedStudSession;
+  final String editAlarmSound;
+  final bool editIsAutoStartSwitched;
+  final int sessionKey;
+
+  const EditTimer(
+      {super.key,
+      required this.editStudSessionName,
+      required this.editSelectedStudSession,
+      required this.editAlarmSound,
+      required this.editIsAutoStartSwitched,
+      required this.sessionKey});
 
   @override
-  State<CreateTimer> createState() => _CreateTimerState();
+  State<EditTimer> createState() => _EditTimerState();
 }
 
-class _CreateTimerState extends State<CreateTimer> {
+class _EditTimerState extends State<EditTimer> {
   //variables
   TextEditingController studSessionNameController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
@@ -21,6 +31,8 @@ class _CreateTimerState extends State<CreateTimer> {
   String selectedOption = '';
   int _textLength = 0;
   bool _isEditing = false;
+
+  late int sessionKey;
 
   final TextEditingController _pomodoroController = TextEditingController();
   final TextEditingController _shortBreakController = TextEditingController();
@@ -38,6 +50,15 @@ class _CreateTimerState extends State<CreateTimer> {
   @override
   void initState() {
     super.initState();
+    // Set the initial values
+    studSessionNameController =
+        TextEditingController(text: widget.editStudSessionName);
+    selectedOption = widget.editSelectedStudSession;
+    alarmSound = widget.editAlarmSound;
+    isAutoStartSwitched = widget.editIsAutoStartSwitched;
+    sessionKey = widget.sessionKey;
+    _setFields(selectedOption);
+
     // Add a listener to the focus node to update editing state
     _focusNode.addListener(() {
       setState(() {
@@ -65,6 +86,7 @@ class _CreateTimerState extends State<CreateTimer> {
     _pomodoroController.dispose();
     _shortBreakController.dispose();
     _longBreakController.dispose();
+    studSessionNameController.dispose();
     _focusNode.dispose();
     super.dispose();
   }
@@ -622,12 +644,7 @@ class _CreateTimerState extends State<CreateTimer> {
                                   return;
                                 }
                               }
-                              addStudSession(
-                                studSessionNameController.text,
-                                selectedOption,
-                                alarmSound,
-                                isAutoStartSwitched,
-                              );
+                              saveSession(sessionKey);
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -666,24 +683,30 @@ class _CreateTimerState extends State<CreateTimer> {
     );
   }
 
-  // This will save the study session
-  void addStudSession(String studSessionName, String selectedStudSession,
-      String alarmSound, bool isAutoStartSwitched) async {
-    {
-      // Proceed with saving the session
-      final studSession = HiveModel()
+  // Function to save the edited session
+  void saveSession(int sessionKey) {
+    final box = Boxes.getStudSession();
+    final studSession = box.get(sessionKey);
+
+    if (studSession != null) {
+      // Update the existing session
+      studSession.studSessionName = studSessionNameController.text;
+      studSession.selectedStudSession = selectedOption;
+      studSession.alarmSound = alarmSound;
+      studSession.isAutoStartSwitched = isAutoStartSwitched;
+      box.put(sessionKey, studSession); // Use the key to update the item
+    } else {
+      // Add new session if not found (optional, depending on your use case)
+      final newStudSession = HiveModel()
         ..studSessionName = studSessionNameController.text
         ..selectedStudSession = selectedOption
         ..alarmSound = alarmSound
         ..isAutoStartSwitched = isAutoStartSwitched;
-
-      final box = Boxes.getStudSession();
-      box.add(studSession);
-      // Use a local variable to store the context
-      if (mounted) {
-        Navigator.of(context).pop();
-      }
+      box.add(newStudSession);
     }
+
+    // Navigate back to the previous screen
+    Navigator.pop(context);
   }
 
   // Function to build rows for Pomodoro, Short Break, Long Break
@@ -729,8 +752,4 @@ class _CreateTimerState extends State<CreateTimer> {
       ],
     );
   }
-}
-
-void main() {
-  runApp(const MaterialApp(home: CreateTimer()));
 }

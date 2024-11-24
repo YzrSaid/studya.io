@@ -551,35 +551,6 @@ class _AddTimerState extends State<AddTimer> {
                             ),
                           ],
                         ),
-
-                        //notify completion
-                        const SizedBox(height: 15),
-                        Row(
-                          children: [
-                            const Text(
-                              'Notify Completion',
-                              style: TextStyle(
-                                color: Color.fromRGBO(84, 84, 84, 1),
-                                fontSize: 15,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const Spacer(),
-                            FlutterSwitch(
-                              activeColor: const Color.fromRGBO(112, 182, 1, 1),
-                              width: 49.0,
-                              height: 25.0,
-                              toggleSize: 20.0,
-                              value: value.isNotifyCompletionSwitched,
-                              onToggle: (newValue) {
-                                setState(() {
-                                  value.setNotifyCompletionSwitched(newValue);
-                                });
-                              },
-                            ),
-                          ],
-                        ),
                       ],
                     ),
                   ),

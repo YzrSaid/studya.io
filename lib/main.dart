@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 import 'package:studya_io/models/additionalsettings_model.dart';
 import 'package:studya_io/models/settings_model.dart';
 import 'package:studya_io/screens/main_nav_bar.dart';
 import 'package:flutter/services.dart';
+import 'package:studya_io/screens/pomodoro_timer_page/create_pomodoro_timer/hive_model.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize hive
+  await Hive.initFlutter();
+
+  // Register hive adapters
+  Hive.registerAdapter(HiveModelAdapter());
+
+  // Open hive box
+  await Hive.openBox<HiveModel>('studSession');
+
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

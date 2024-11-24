@@ -106,16 +106,48 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
       case TimerState.pomodoro:
         _completedCycles++;
         if (_completedCycles % 3 == 0) {
-          _showBreakDialog(TimerState.longbreak);
+          if (Provider.of<AdditionalSettingsModel>(context, listen: false)
+                  .isAutoStartSwitched ==
+              false) {
+            _showBreakDialog(TimerState.longbreak);
+          } else {
+            // switch automatically without showing the dialog
+            _currentState = TimerState.longbreak;
+            _startTimer();
+          }
         } else {
-          _showBreakDialog(TimerState.shortbreak);
+          if (Provider.of<AdditionalSettingsModel>(context, listen: false)
+                  .isAutoStartSwitched ==
+              false) {
+            _showBreakDialog(TimerState.shortbreak);
+          } else {
+            // switch automatically without showing the dialog
+            _currentState = TimerState.shortbreak;
+            _startTimer();
+          }
         }
         break;
       case TimerState.shortbreak:
-        _showBreakDialog(TimerState.pomodoro);
+        if (Provider.of<AdditionalSettingsModel>(context, listen: false)
+                .isAutoStartSwitched ==
+            false) {
+          _showBreakDialog(TimerState.pomodoro);
+        } else {
+          // switch automatically without showing the dialog
+          _currentState = TimerState.pomodoro;
+          _startTimer();
+        }
         break;
       case TimerState.longbreak:
-        _showBreakDialog(TimerState.pomodoro);
+        if (Provider.of<AdditionalSettingsModel>(context, listen: false)
+                .isAutoStartSwitched ==
+            false) {
+          _showBreakDialog(TimerState.pomodoro);
+        } else {
+          // switch automatically without showing the dialog
+          _currentState = TimerState.pomodoro;
+          _startTimer();
+        }
         break;
     }
   }
@@ -279,20 +311,22 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
               TextButton(
                 onPressed: () => Navigator.of(context).pop(false),
                 child: const Text('Cancel',
-                    style: TextStyle(color: Color.fromRGBO(112, 182, 1, 1))),
-              ),
-              TextButton(
-                onPressed: () {
-                  // Save logic here
-                  Navigator.of(context).pop(true);
-                },
-                child: const Text('Save and Exit',
-                    style: TextStyle(color: Color.fromRGBO(112, 182, 1, 1))),
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w600,
+                    )),
               ),
               TextButton(
                 onPressed: () => Navigator.of(context).pop(true),
                 child: const Text('Exit',
-                    style: TextStyle(color: Color.fromRGBO(112, 182, 1, 1))),
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w600,
+                    )),
               ),
             ],
           ),
@@ -485,7 +519,6 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                                     value: valueSettings
                                                         .volumeAlarmSound,
                                                     onChanged: (newValue) {
-                                                      // Directly call the setter in SettingsModel
                                                       valueSettings
                                                           .setVolumeAlarmSound(
                                                               newValue);
@@ -573,8 +606,20 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                 height: 25,
                                 child: FlutterSwitch(
                                   toggleSize: 20,
-                                  activeColor:
-                                      const Color.fromRGBO(112, 182, 1, 1),
+                                  activeColor: (() {
+                                    if (_currentState == TimerState.pomodoro) {
+                                      return Color.fromRGBO(112, 182, 1, 1);
+                                    } else if (_currentState ==
+                                        TimerState.shortbreak) {
+                                      return Color.fromRGBO(136, 136, 132, 1);
+                                    } else if (_currentState ==
+                                        TimerState.longbreak) {
+                                      return Colors.black;
+                                    }
+                                    return Colors.grey; // Default color
+                                  })(),
+                                  inactiveColor:
+                                      Color.fromRGBO(136, 136, 132, 0.3),
                                   value: value.isAutoStartSwitched,
                                   onToggle: (newValue) {
                                     setState(() {
@@ -587,36 +632,6 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                 setState(() {
                                   value.setAutoStartSwitched(
                                       !value.isAutoStartSwitched);
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                        PopupMenuItem(
-                          child: Consumer<AdditionalSettingsModel>(
-                            builder: (context, value, child) => ListTile(
-                              title: const Text('Notify Completion'),
-                              leading: const Icon(Icons.notifications),
-                              trailing: SizedBox(
-                                width: 49,
-                                height: 25,
-                                child: FlutterSwitch(
-                                  toggleSize: 20,
-                                  activeColor:
-                                      const Color.fromRGBO(112, 182, 1, 1),
-                                  value: value.isNotifyCompletionSwitched,
-                                  onToggle: (newValue) {
-                                    setState(() {
-                                      value.setNotifyCompletionSwitched(
-                                          newValue);
-                                    });
-                                  },
-                                ),
-                              ),
-                              onTap: () {
-                                setState(() {
-                                  value.setNotifyCompletionSwitched(
-                                      !value.isNotifyCompletionSwitched);
                                 });
                               },
                             ),
@@ -837,6 +852,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                       child: const Text('Cancel',
                                           style: TextStyle(
                                             fontFamily: 'Montserrat',
+                                            fontSize: 15,
                                             fontWeight: FontWeight.w600,
                                             color:
                                                 Color.fromRGBO(84, 84, 84, 1),
@@ -861,6 +877,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                       child: const Text('Reset',
                                           style: TextStyle(
                                               fontFamily: 'Montserrat',
+                                              fontSize: 15,
                                               fontWeight: FontWeight.w600,
                                               color: Color.fromRGBO(
                                                   84, 84, 84, 1))),
@@ -977,7 +994,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                                 Color.fromRGBO(84, 84, 94, 1),
                                             fontSize: 15,
                                             fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w500,
+                                            fontWeight: FontWeight.w600,
                                           )),
                                     ),
                                   ],
