@@ -18,8 +18,8 @@ void main() async {
 
   // Open hive box
   await Hive.openBox<HiveModel>('studSession');
+  await Hive.openBox('ProfileSettings');
 
-  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown // Lock to portrait mode

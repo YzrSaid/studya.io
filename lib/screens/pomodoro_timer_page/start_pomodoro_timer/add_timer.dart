@@ -133,7 +133,7 @@ class _AddTimerState extends State<AddTimer> {
                     height: 100,
                     fit: BoxFit.contain,
                     alignment: Alignment.center,
-                    image: AssetImage('assets/read.png'),
+                    image: AssetImage('assets/images/read.png'),
                   ),
                 ),
                 const SizedBox(height: 30),

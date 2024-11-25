@@ -312,7 +312,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                 onPressed: () => Navigator.of(context).pop(false),
                 child: const Text('Cancel',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Color.fromRGBO(112, 182, 1, 1),
                       fontSize: 15,
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.w600,
@@ -854,8 +854,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                             fontFamily: 'Montserrat',
                                             fontSize: 15,
                                             fontWeight: FontWeight.w600,
-                                            color:
-                                                Color.fromRGBO(84, 84, 84, 1),
+                                            color: Color.fromRGBO(112, 182, 1, 1)
                                           )),
                                     ),
                                     TextButton(
@@ -878,7 +877,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                           style: TextStyle(
                                               fontFamily: 'Montserrat',
                                               fontSize: 15,
-                                              fontWeight: FontWeight.w600,
+                                              fontWeight: FontWeight.w500,
                                               color: Color.fromRGBO(
                                                   84, 84, 84, 1))),
                                     ),
@@ -975,7 +974,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                       child: const Text(
                                         'Cancel',
                                         style: TextStyle(
-                                          color: Color.fromRGBO(84, 84, 84, 1),
+                                          color: Color.fromRGBO(112, 182, 1, 1),
                                           fontSize: 15,
                                           fontFamily: 'Montserrat',
                                           fontWeight: FontWeight.w600,
@@ -994,7 +993,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                                 Color.fromRGBO(84, 84, 94, 1),
                                             fontSize: 15,
                                             fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w600,
+                                            fontWeight: FontWeight.w500,
                                           )),
                                     ),
                                   ],

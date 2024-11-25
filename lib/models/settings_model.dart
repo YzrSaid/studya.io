@@ -1,10 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:volume_control/volume_control.dart';
 import 'dart:async'; // For Timer
+import 'package:flutter_volume_controller/flutter_volume_controller.dart';
+import 'package:hive/hive.dart';
 
 class SettingsModel extends ChangeNotifier {
   // Profile settings
-  String userName = 'Yzr';
+  String _userName = 'Ferson'; // Default name
+  String get userName => _userName;
+
+  // Load the username from Hive when the app starts
+  Future<void> loadUserName() async {
+    var box = await Hive.openBox('ProfileSettings');
+    _userName = box.get('userName', defaultValue: 'Ferson');
+    notifyListeners();
+  }
+
+  // Save the username to Hive
+  Future<void> changeUserName(String newName) async {
+    var box = await Hive.openBox('ProfileSettings');
+    await box.put('userName', newName);
+    _userName = newName;
+    notifyListeners(); // Notify listeners about the update
+  }
 
   // Volume for alarm, background, and SFX sounds
   double _volumeAlarmSound = 0.5;
@@ -23,8 +40,8 @@ class SettingsModel extends ChangeNotifier {
   void setVolumeAlarmSound(double newValue) {
     _volumeAlarmSound = newValue;
     notifyListeners();
-    // Optionally update system media volume to match app volume
-    VolumeControl.setVolume(newValue);
+    // Update system media volume to match app volume
+    FlutterVolumeController.setVolume(newValue);
   }
 
   void setVolumeBackgroundSound(double newValue) {
@@ -39,14 +56,14 @@ class SettingsModel extends ChangeNotifier {
 
   // Initialize a periodic check for system volume changes
   Future<void> initializeVolumeListener() async {
-    // Get current system media volume at the start
-    double currentVolume = await VolumeControl.volume;
+// Get current system media volume at the start
+    double currentVolume = await FlutterVolumeController.getVolume() ?? 0.5; // Provide a default value (e.g., 0.5)
     _volumeAlarmSound = currentVolume;
     notifyListeners();
 
     // Periodically check the system volume every second
     _volumeCheckTimer = Timer.periodic(Duration(seconds: 1), (timer) async {
-      double newVolume = await VolumeControl.volume;
+      double newVolume = await FlutterVolumeController.getVolume() ?? 0.5; // Provide a default value
       if (newVolume != _volumeAlarmSound) {
         _volumeAlarmSound = newVolume;
         notifyListeners();

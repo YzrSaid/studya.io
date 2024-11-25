@@ -30,7 +30,7 @@ class _FlashcardsState extends State<FlashcardsMain> {
             Align(
               alignment: Alignment.bottomRight,
               child: Padding(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(15),
                 child: IconButton(
                   splashColor: const Color.fromRGBO(112, 182, 1, 1),
                   padding: const EdgeInsets.all(15),

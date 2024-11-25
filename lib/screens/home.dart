@@ -15,6 +15,12 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int selectedIndex = 0;
 
+  void initState() {
+    super.initState();
+    // Load the user name when the Home screen is initialized
+    Provider.of<SettingsModel>(context, listen: false).loadUserName();
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -25,7 +31,7 @@ class _HomeState extends State<Home> {
     return Consumer<SettingsModel>(
       builder: (context, value, child) {
         return Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
           child: Scaffold(
             appBar: AppBar(
               leading: const Image(
@@ -248,7 +254,7 @@ class _HomeState extends State<Home> {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(300, 65),
+                        minimumSize: const Size(385, 65),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),

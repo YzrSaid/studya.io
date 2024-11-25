@@ -26,8 +26,8 @@ class _SettingsAboutUsState extends State<SettingsAboutUs> {
                     const Text(
                       'About Us',
                       style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.normal,
+                          fontSize: 16.5,
+                          fontWeight: FontWeight.w500,
                           fontFamily: 'Montserrat',
                           color: Color.fromRGBO(84, 84, 84, 1)),
                     ),
@@ -42,8 +42,10 @@ class _SettingsAboutUsState extends State<SettingsAboutUs> {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                               title: const Text('About Us'),
-                              shadowColor: const Color.fromRGBO(112, 182, 1, 1),
                               content: const Text(
                                 'Us? Ako lang man isa nag develop ani. Haha.',
                               ),
@@ -74,8 +76,8 @@ class _SettingsAboutUsState extends State<SettingsAboutUs> {
                     const Text(
                       'About the App',
                       style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.normal,
+                        fontSize: 16.5,
+                        fontWeight: FontWeight.w500,
                         fontFamily: 'Montserrat',
                         color: Color.fromRGBO(84, 84, 84, 1),
                       ),
@@ -90,8 +92,10 @@ class _SettingsAboutUsState extends State<SettingsAboutUs> {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                               title: const Text('About the App'),
-                              shadowColor: const Color.fromRGBO(112, 182, 1, 1),
                               content: const Text(
                                 'This app is developed to help students manage their study schedules and track their progress.',
                               ),
@@ -124,8 +128,8 @@ class _SettingsAboutUsState extends State<SettingsAboutUs> {
                     Text(
                       'Version',
                       style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.normal,
+                        fontSize: 16.5,
+                        fontWeight: FontWeight.w500,
                         fontFamily: 'Montserrat',
                       ),
                     ),
@@ -137,7 +141,7 @@ class _SettingsAboutUsState extends State<SettingsAboutUs> {
                         style: TextStyle(
                           color: Color.fromRGBO(112, 182, 1, 1),
                           fontSize: 18,
-                          fontWeight: FontWeight.normal,
+                          fontWeight: FontWeight.w500,
                           fontFamily: 'Montserrat',
                         ),
                       ),

@@ -27,8 +27,8 @@ class _SettingsContactUsState extends State<SettingsContactUs> {
                     'Contact Us',
                     style: TextStyle(
                       color: Color.fromRGBO(84, 84, 84, 1),
-                      fontSize: 18,
-                      fontWeight: FontWeight.normal,
+                      fontSize: 16.5,
+                      fontWeight: FontWeight.w500,
                       fontFamily: 'Montserrat',
                     ),
                   ),
