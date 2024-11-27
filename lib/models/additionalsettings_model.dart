@@ -22,7 +22,6 @@ class AdditionalSettingsModel extends ChangeNotifier {
   //setter for the alarm sound
   void setAlarmSound(String newValue) {
     _alarmSound = newValue;
-    print('Alarm sound: $_alarmSound');
     notifyListeners();
   }
 }

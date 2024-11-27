@@ -352,7 +352,7 @@ class _CreateTimerState extends State<CreateTimer> {
                         ),
                       ),
                       DropdownMenuItem<String>(
-                        value: 'Custom',
+                        value: 'selectedOption',
                         child: Text(
                           'Custom',
                           style: TextStyle(
@@ -599,6 +599,10 @@ class _CreateTimerState extends State<CreateTimer> {
                                 ),
                               );
                             } else {
+                              if (_isCustom) {
+                                selectedOption = '${_pomodoroController.text} min - ${_shortBreakController.text} min - ${_longBreakController.text} min';
+                              }
+
                               // check if the session name is existing already
                               final box = Boxes.getStudSession();
                               final studSessions =
@@ -622,6 +626,7 @@ class _CreateTimerState extends State<CreateTimer> {
                                   return;
                                 }
                               }
+                              // Save the session
                               addStudSession(
                                 studSessionNameController.text,
                                 selectedOption,

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+import 'package:studya_io/screens/pomodoro_timer_page/create_pomodoro_timer/edit_timer.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
@@ -9,6 +11,8 @@ import 'package:studya_io/screens/pomodoro_timer_page/tasks_timer.dart';
 import 'package:studya_io/screens/pomodoro_timer_page/timer_card.dart';
 import 'dart:async';
 
+import 'create_pomodoro_timer/boxes.dart';
+
 enum TimerState {
   pomodoro,
   shortbreak,
@@ -19,11 +23,19 @@ class PomodoroTimer extends StatefulWidget {
   final int pomodoroMinutes;
   final int shortbreakMinutes;
   final int longbreakMinutes;
+  final String alarmSound;
+  final bool isAutoStart;
+  final bool isThisASavedTimer;
+  final int sessionKey;
   const PomodoroTimer({
     super.key,
     required this.pomodoroMinutes,
     required this.shortbreakMinutes,
     required this.longbreakMinutes,
+    this.sessionKey = 1, // default value
+    this.isThisASavedTimer = false, // default value
+    this.alarmSound = 'Sound 1', // default value
+    this.isAutoStart = false, // default value
   });
 
   // getter of _currentState
@@ -37,6 +49,12 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
   bool isTimerPlaying = true;
   bool isTimerStopPressed = false;
   bool isStopPressed = false;
+  bool isEdit = false;
+
+  late String _currentAlarmSound;
+  late bool _isAutoStart;
+  late bool _isThisASavedTimer;
+  late int _sessionKey;
 
   //for the timer
   late Duration _duration;
@@ -47,11 +65,28 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
   @override
   void initState() {
     super.initState();
+    _sessionKey = widget.sessionKey;
+    _currentAlarmSound = widget.alarmSound;
+    _isAutoStart = widget.isAutoStart;
+    _isThisASavedTimer = widget.isThisASavedTimer;
     // Ensure the volume listener is initialized to detect hardware button changes
     Provider.of<SettingsModel>(context, listen: false)
         .initializeVolumeListener();
     _startTimer();
   }
+
+  void _setAlarmSound(String newSound) {
+    setState(() {
+      _currentAlarmSound = newSound;
+    });
+  }
+
+  void _setAutoStartSound(bool newAutoStart) {
+    setState(() {
+      _isAutoStart = newAutoStart;
+    });
+  }
+
 
   void _startTimer() {
     // Set the duration based on the current state
@@ -209,7 +244,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
       dialogType: DialogType.noHeader,
       width: 400,
       animType: AnimType.bottomSlide,
-      body: Column(
+      body:  Column(
         children: [
           Text('You are doing great!',
               style: TextStyle(
@@ -265,6 +300,28 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
     _timer?.cancel();
     Navigator.pop(context);
   }
+
+  void updateStudSession({
+    required int sessionKey,
+    required String alarmSound,
+    required bool isAutoStartSwitched,
+  }) {
+    // Get the Hive box for storing student sessions
+    final box = Boxes.getStudSession();
+
+    // Retrieve the session using the key
+    final studSession = box.get(sessionKey);
+
+    if (studSession != null) {
+      // Update the fields of the existing session
+      studSession.alarmSound = alarmSound;
+      studSession.isAutoStartSwitched = isAutoStartSwitched;
+
+      // Save the updated session back to the box
+      box.put(sessionKey, studSession);
+    }
+  }
+
 
   void showCompletionDialog() {
     showDialog(
@@ -432,7 +489,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                     title: const Text('Alarm'),
                                     content: Consumer<AdditionalSettingsModel>(
                                       builder: (context,
-                                              valueAdditionalSettings, child) =>
+                                              value, child) =>
                                           Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
@@ -482,16 +539,12 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                                   ],
                                                   onChanged: (newValue) {
                                                     setState(() {
-                                                      // Check if newValue is not null before calling setAlarmSound
-                                                      if (newValue != null) {
-                                                        valueAdditionalSettings
-                                                            .setAlarmSound(
-                                                                newValue);
-                                                      }
+                                                        _setAlarmSound(newValue!);
+                                                        value.setAlarmSound(newValue);
+                                                        isEdit = true;
                                                     });
                                                   },
-                                                  value: valueAdditionalSettings
-                                                      .alarmSound,
+                                                  value: _currentAlarmSound,
                                                 ),
                                               ),
                                             ],
@@ -580,6 +633,87 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                         ),
                                         onPressed: () {
                                           Navigator.of(context).pop();
+                                          // We will check first if this is a saved timer, if TRUE then we will update the values in the database and pop up a confirmation dialog
+                                          if (_isThisASavedTimer && isEdit) {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(10)),
+                                                  title: const Text('Save Changes?',
+                                                      style: TextStyle(
+                                                        color: Color.fromRGBO(84, 84, 84, 1),
+                                                        fontSize: 20,
+                                                        fontFamily: 'Montserrat',
+                                                        fontWeight: FontWeight.w700,
+                                                      )),
+                                                  content: Container(
+                                                    width: 280.0,
+                                                    height: 50.0,
+                                                    child: const Text(
+                                                      'These changes will be saved.',
+                                                      style: TextStyle(
+                                                        color: Color.fromRGBO(84, 84, 84, 1),
+                                                        fontSize: 15,
+                                                        fontFamily: 'Montserrat',
+                                                        fontWeight: FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                      style: ButtonStyle(
+                                                        overlayColor: WidgetStatePropertyAll(
+                                                            Colors.transparent),
+                                                        shadowColor:
+                                                        WidgetStateProperty.all<Color>(
+                                                            Colors.transparent),
+                                                        surfaceTintColor:
+                                                        WidgetStatePropertyAll<Color>(
+                                                            Colors.transparent),
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop(); // Close the dialog
+                                                      },
+                                                      child: const Text('Cancel',
+                                                          style: TextStyle(
+                                                              fontFamily: 'Montserrat',
+                                                              fontSize: 15,
+                                                              fontWeight: FontWeight.w600,
+                                                              color: Color.fromRGBO(112, 182, 1, 1)
+                                                          )),
+                                                    ),
+                                                    TextButton(
+                                                      style: ButtonStyle(
+                                                        overlayColor: WidgetStatePropertyAll(
+                                                            Colors.transparent),
+                                                        shadowColor:
+                                                        WidgetStateProperty.all<Color>(
+                                                            Colors.transparent),
+                                                        surfaceTintColor:
+                                                        WidgetStatePropertyAll<Color>(
+                                                            Colors.transparent),
+                                                      ),
+                                                      onPressed: () {
+                                                        updateStudSession(sessionKey: _sessionKey, alarmSound: _currentAlarmSound, isAutoStartSwitched: _isAutoStart);
+                                                        Navigator.of(context)
+                                                            .pop(); // Close the dialog
+                                                      },
+                                                      child: const Text('Okay',
+                                                          style: TextStyle(
+                                                              fontFamily: 'Montserrat',
+                                                              fontSize: 15,
+                                                              fontWeight: FontWeight.w500,
+                                                              color: Color.fromRGBO(
+                                                                  84, 84, 84, 1))),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          }
                                         },
                                         child: const Text('Close',
                                             style: TextStyle(
@@ -620,19 +754,96 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                   })(),
                                   inactiveColor:
                                       Color.fromRGBO(136, 136, 132, 0.3),
-                                  value: value.isAutoStartSwitched,
+                                  value: _isAutoStart,
                                   onToggle: (newValue) {
                                     setState(() {
-                                      value.setAutoStartSwitched(newValue);
+                                        _setAutoStartSound(newValue);
+                                        value.setAutoStartSwitched(newValue);
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(10)),
+                                              title: const Text('Save Changes?',
+                                                  style: TextStyle(
+                                                    color: Color.fromRGBO(84, 84, 84, 1),
+                                                    fontSize: 20,
+                                                    fontFamily: 'Montserrat',
+                                                    fontWeight: FontWeight.w700,
+                                                  )),
+                                              content: Container(
+                                                width: 280.0,
+                                                height: 50.0,
+                                                child: const Text(
+                                                  'These changes will be saved to this Pomodoro Timer Profile.',
+                                                  style: TextStyle(
+                                                    color: Color.fromRGBO(84, 84, 84, 1),
+                                                    fontSize: 15,
+                                                    fontFamily: 'Montserrat',
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  style: ButtonStyle(
+                                                    overlayColor: WidgetStatePropertyAll(
+                                                        Colors.transparent),
+                                                    shadowColor:
+                                                    WidgetStateProperty.all<Color>(
+                                                        Colors.transparent),
+                                                    surfaceTintColor:
+                                                    WidgetStatePropertyAll<Color>(
+                                                        Colors.transparent),
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context)
+                                                        .pop(); // Close the dialog
+                                                  },
+                                                  child: const Text('Cancel',
+                                                      style: TextStyle(
+                                                          fontFamily: 'Montserrat',
+                                                          fontSize: 15,
+                                                          fontWeight: FontWeight.w600,
+                                                          color: Color.fromRGBO(112, 182, 1, 1)
+                                                      )),
+                                                ),
+                                                TextButton(
+                                                  style: ButtonStyle(
+                                                    overlayColor: WidgetStatePropertyAll(
+                                                        Colors.transparent),
+                                                    shadowColor:
+                                                    WidgetStateProperty.all<Color>(
+                                                        Colors.transparent),
+                                                    surfaceTintColor:
+                                                    WidgetStatePropertyAll<Color>(
+                                                        Colors.transparent),
+                                                  ),
+                                                  onPressed: () {
+                                                    updateStudSession(sessionKey: _sessionKey, alarmSound: _currentAlarmSound, isAutoStartSwitched: _isAutoStart);
+                                                    Navigator.of(context)
+                                                        .pop(); // Close the dialog
+                                                  },
+                                                  child: const Text('Okay',
+                                                      style: TextStyle(
+                                                          fontFamily: 'Montserrat',
+                                                          fontSize: 15,
+                                                          fontWeight: FontWeight.w500,
+                                                          color: Color.fromRGBO(
+                                                              84, 84, 84, 1))),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
                                     });
                                   },
                                 ),
                               ),
                               onTap: () {
-                                setState(() {
-                                  value.setAutoStartSwitched(
-                                      !value.isAutoStartSwitched);
-                                });
+                                _isAutoStart;
+
                               },
                             ),
                           ),
@@ -783,6 +994,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                 ),
               ],
             ),
+
             //body
             body: Padding(
               padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
@@ -824,13 +1036,17 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                         fontFamily: 'Montserrat',
                                         fontWeight: FontWeight.w700,
                                       )),
-                                  content: const Text(
-                                    'Are you sure you want to reset the timer?',
-                                    style: TextStyle(
-                                      color: Color.fromRGBO(84, 84, 84, 1),
-                                      fontSize: 15,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w500,
+                                  content: Container(
+                                    width: 280.0,
+                                    height: 50.0,
+                                    child: const Text(
+                                      'Are you sure you want to reset the timer?',
+                                      style: TextStyle(
+                                        color: Color.fromRGBO(84, 84, 84, 1),
+                                        fontSize: 15,
+                                        fontFamily: 'Montserrat',
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                   ),
                                   actions: [
@@ -957,14 +1173,18 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                         fontFamily: 'Montserrat',
                                         fontWeight: FontWeight.w700,
                                       )),
-                                  content: const Text(
-                                      'Are you sure you want to stop the timer?',
-                                      style: TextStyle(
-                                        color: Color.fromRGBO(84, 84, 84, 1),
-                                        fontSize: 15,
-                                        fontFamily: 'Montserrat',
-                                        fontWeight: FontWeight.w500,
-                                      )),
+                                  content: Container(
+                                    width: 280.0,
+                                    height: 50.0,
+                                    child: const Text(
+                                        'Are you sure you want to stop the timer?',
+                                        style: TextStyle(
+                                          color: Color.fromRGBO(84, 84, 84, 1),
+                                          fontSize: 15,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w500,
+                                        )),
+                                  ),
                                   actions: [
                                     TextButton(
                                       onPressed: () {
@@ -983,6 +1203,8 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                                     ),
                                     TextButton(
                                       onPressed: () {
+                                        Provider.of<AdditionalSettingsModel>(context, listen: false).setAlarmSound('Sound 1');
+                                        Provider.of<AdditionalSettingsModel>(context, listen: false).setAutoStartSwitched(false);
                                         stopPomodoroTimer(); // Stop the timer
                                         Navigator.of(context)
                                             .pop(); // Close the dialog

@@ -53,16 +53,24 @@ class _EditTimerState extends State<EditTimer> {
     // Set the initial values
     studSessionNameController =
         TextEditingController(text: widget.editStudSessionName);
-    selectedOption = widget.editSelectedStudSession;
+    if (widget.editSelectedStudSession != '10 min - 5 min - 10 min' &&
+        widget.editSelectedStudSession != '20 min - 5 min - 15 min' &&
+        widget.editSelectedStudSession != '40 min - 8 min - 20 min' &&
+        widget.editSelectedStudSession != '60 min - 10 min - 25 min') {
+      selectedOption = widget.editSelectedStudSession;
+      _setFields(selectedOption);
+    } else {
+      selectedOption = widget.editSelectedStudSession;
+      _setFields(selectedOption);
+    }
     alarmSound = widget.editAlarmSound;
     isAutoStartSwitched = widget.editIsAutoStartSwitched;
     sessionKey = widget.sessionKey;
-    _setFields(selectedOption);
 
     // Add a listener to the focus node to update editing state
     _focusNode.addListener(() {
       setState(() {
-        _isEditing = _focusNode.hasFocus; // Update editing state based on focus
+        _isEditing = _focusNode.hasFocus;
       });
     });
   }
@@ -74,10 +82,26 @@ class _EditTimerState extends State<EditTimer> {
       _longBreakController.text = _predefinedValues[selected]![2];
       _isCustom = false;
     } else {
-      _pomodoroController.clear();
-      _shortBreakController.clear();
-      _longBreakController.clear();
-      _isCustom = true;
+      // Ensure selectedOption is in the correct format: "40 min - 8 min - 20 min"
+      if (selectedOption.contains(" - ")) {
+        List<String> timeParts = selectedOption.split(" - "); // ["40 min", "8 min", "20 min"]
+
+        try {
+          int pomodoroMinutes = int.parse(timeParts[0].replaceAll(' min', ''));
+          int shortBreakMinutes = int.parse(timeParts[1].replaceAll(' min', ''));
+          int longBreakMinutes = int.parse(timeParts[2].replaceAll(' min', ''));
+
+          _pomodoroController.text = pomodoroMinutes.toString();
+          _shortBreakController.text = shortBreakMinutes.toString();
+          _longBreakController.text = longBreakMinutes.toString();
+          _isCustom = true;
+          selectedOption = 'Custom';
+        } catch (e) {
+          print("Error parsing time values: $e");
+        }
+      } else {
+        print("selectedOption is not in the correct format: $selectedOption");
+      }
     }
   }
 
@@ -175,7 +199,7 @@ class _EditTimerState extends State<EditTimer> {
                   height: 100,
                   fit: BoxFit.contain,
                   alignment: Alignment.center,
-                  image: AssetImage('assets/read.png'),
+                  image: AssetImage('assets/images/read.png'),
                 ),
               ),
               const SizedBox(height: 30),
@@ -195,7 +219,7 @@ class _EditTimerState extends State<EditTimer> {
                     icon: const Icon(Icons.keyboard_arrow_down),
                     isExpanded: false,
                     hint: const Text('Choose a study session'),
-                    value: selectedOption.isNotEmpty ? selectedOption : null,
+                    value: selectedOption.isNotEmpty ? selectedOption : 'Custom',
                     items: [
                       DropdownMenuItem<String>(
                         value: '10 min - 5 min - 10 min',
@@ -620,32 +644,8 @@ class _EditTimerState extends State<EditTimer> {
                                   backgroundColor: Colors.grey[900],
                                 ),
                               );
-                            } else {
-                              // check if the session name is existing already
-                              final box = Boxes.getStudSession();
-                              final studSessions =
-                                  box.values.toList().cast<HiveModel>();
-                              for (var i = 0; i < studSessions.length; i++) {
-                                if (studSessions[i].studSessionName ==
-                                    studSessionNameController.text) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Session name already exists. Please enter a different name.',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      backgroundColor: Colors.grey[900],
-                                    ),
-                                  );
-                                  return;
-                                }
-                              }
-                              saveSession(sessionKey);
                             }
+                              saveSession(sessionKey);
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
@@ -687,6 +687,9 @@ class _EditTimerState extends State<EditTimer> {
   void saveSession(int sessionKey) {
     final box = Boxes.getStudSession();
     final studSession = box.get(sessionKey);
+    if (_isCustom) {
+      selectedOption = '${_pomodoroController.text} min - ${_shortBreakController.text} min - ${_longBreakController.text} min';
+    }
 
     if (studSession != null) {
       // Update the existing session
