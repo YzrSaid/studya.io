@@ -15,6 +15,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int selectedIndex = 0;
 
+  @override
   void initState() {
     super.initState();
     // Load the user name when the Home screen is initialized
