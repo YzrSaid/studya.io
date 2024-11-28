@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:studya_io/screens/pomodoro_timer_page/create_pomodoro_timer/boxes.dart';
@@ -645,7 +646,73 @@ class _EditTimerState extends State<EditTimer> {
                                 ),
                               );
                             }
-                              saveSession(sessionKey);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  title: const Text('Save Changes?',
+                                      style: TextStyle(
+                                        color: Color.fromRGBO(84, 84, 84, 1),
+                                        fontSize: 20,
+                                        fontFamily: 'Montserrat',
+                                        fontWeight: FontWeight.w700,
+                                      )),
+                                  content: Container(
+                                    width: 280.0,
+                                    height: 50.0,
+                                    child: const Text(
+                                        'These changes will be saved to this Pomodoro Timer Profile.',
+                                        style: TextStyle(
+                                          color: Color.fromRGBO(84, 84, 84, 1),
+                                          fontSize: 15,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w500,
+                                        )),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .pop(); // Close the dialog
+                                      },
+                                      child: const Text(
+                                        'Cancel',
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w500,
+                                          color:
+                                          Color.fromRGBO(84, 84, 94, 1),
+                                        ),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      style: TextButton.styleFrom(
+                                        backgroundColor: Color.fromRGBO(112, 182, 1, 1),
+                                        foregroundColor: Colors.white,
+                                        padding: EdgeInsets.symmetric(horizontal: 26, vertical: 10.0),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(8.0),
+                                        ),
+                                        elevation: 0,
+                                      ),
+                                      onPressed: () {
+                                        saveSession(sessionKey);
+                                        // Show AwesomeDialog and wait for the user to press the "Okay" button
+                                      },
+                                      child: const Text('Save',
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w500,
+                                          )),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
@@ -683,8 +750,8 @@ class _EditTimerState extends State<EditTimer> {
     );
   }
 
-  // Function to save the edited session
-  void saveSession(int sessionKey) {
+// Function to save the edited session
+  void saveSession(int sessionKey) async {
     final box = Boxes.getStudSession();
     final studSession = box.get(sessionKey);
     if (_isCustom) {
@@ -708,9 +775,52 @@ class _EditTimerState extends State<EditTimer> {
       box.add(newStudSession);
     }
 
-    // Navigate back to the previous screen
-    Navigator.pop(context);
+    Navigator.of(context)
+        .pop(); // Close the dialog
+    AwesomeDialog(
+      padding: EdgeInsets.only(bottom: 10),
+      bodyHeaderDistance: 30,
+      width: 400,
+      buttonsBorderRadius: BorderRadius.circular(10),
+      context: context,
+      headerAnimationLoop: false,
+      dialogType: DialogType.noHeader,  // Remove default header
+      animType: AnimType.bottomSlide,
+      title: 'Success',
+      titleTextStyle: TextStyle(
+        color: Color.fromRGBO(0, 0, 0, 0.803921568627451),
+        fontSize: 20,
+        fontFamily: 'Montserrat',
+        fontWeight: FontWeight.bold,
+      ),
+      desc: 'Your changes have been saved successfully!',
+      descTextStyle: const TextStyle(
+        color: Color.fromRGBO(81, 81, 81, 1),
+        fontFamily: 'Montserrat',
+        fontWeight: FontWeight.w500,
+        fontSize: 14,
+      ),
+      btnOkOnPress: () {
+        Navigator.of(context)
+            .pop(); // Close the dialog
+      },
+      btnOkColor: Color.fromRGBO(112, 182, 1, 1),
+      btnOkText: 'Okay',
+      customHeader: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          color: Color.fromRGBO(112, 182, 1, 1),
+        ),
+        padding: EdgeInsets.all(15),
+        child: Icon(
+          Icons.check,
+          size: 50,
+          color: Colors.white,
+        ),
+      ),
+    ).show();
   }
+
 
   // Function to build rows for Pomodoro, Short Break, Long Break
   Row _buildTimeInputRow(

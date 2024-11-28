@@ -1,8 +1,11 @@
 // ignore_for_file: unused_element
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:studya_io/custom_timer_icons_icons.dart';
 import 'package:studya_io/screens/pomodoro_timer_page/pomodoro_timer.dart';
+
+import '../../models/additionalsettings_model.dart';
 
 class TasksTimer extends StatefulWidget {
   final TimerState currentState;
@@ -29,6 +32,7 @@ class _TasksTimerState extends State<TasksTimer> {
     Color addTaskButtonColor;
     Color taskLineColor;
     Color deleteIconColor;
+    Color btnActive;
 
     switch (currentState) {
       case TimerState.pomodoro:
@@ -37,6 +41,7 @@ class _TasksTimerState extends State<TasksTimer> {
         addTaskButtonColor = const Color.fromRGBO(120, 201, 1, 1);
         taskLineColor = const Color.fromRGBO(120, 201, 1, 1);
         deleteIconColor = const Color.fromRGBO(81, 81, 81, 1);
+        btnActive = const Color.fromRGBO(120, 201, 1, 0.5);
         break;
       case TimerState.shortbreak:
         timerTitleColor = const Color.fromRGBO(61, 61, 61, 1);
@@ -44,6 +49,7 @@ class _TasksTimerState extends State<TasksTimer> {
         addTaskButtonColor = const Color.fromRGBO(61, 61, 61, 1);
         taskLineColor = const Color.fromRGBO(61, 61, 61, 1);
         deleteIconColor = const Color.fromRGBO(81, 81, 81, 1);
+        btnActive = const Color.fromRGBO(61, 61, 61, 0.5);
         break;
       case TimerState.longbreak:
         timerTitleColor = const Color.fromARGB(255, 0, 0, 0);
@@ -51,6 +57,7 @@ class _TasksTimerState extends State<TasksTimer> {
         addTaskButtonColor = const Color.fromARGB(255, 0, 0, 0);
         taskLineColor = const Color.fromARGB(255, 0, 0, 0);
         deleteIconColor = const Color.fromRGBO(81, 81, 81, 1);
+        btnActive = const Color.fromARGB(205, 0, 0, 0);
         break;
     }
     return Container(
@@ -100,7 +107,7 @@ class _TasksTimerState extends State<TasksTimer> {
                     child: IconButton(
                       highlightColor: Colors.transparent,
                       onPressed: () => {
-                        _showAddTaskDialog(),
+                        _showAddTaskDialog(btnActive),
                       },
                       icon: Icon(CustomTimerIcons.plus,
                           size: 21, color: addTaskButtonColor),
@@ -172,7 +179,77 @@ class _TasksTimerState extends State<TasksTimer> {
                             Row(
                               children: [
                                 IconButton(
-                                  onPressed: () => _deleteTask(index),
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(10)),
+                                          title: const Text('Delete Task?',
+                                              style: TextStyle(
+                                                color: Color.fromRGBO(84, 84, 84, 1),
+                                                fontSize: 20,
+                                                fontFamily: 'Montserrat',
+                                                fontWeight: FontWeight.w700,
+                                              )),
+                                          content: Container(
+                                            width: 280.0,
+                                            height: 50.0,
+                                            child: const Text(
+                                                'Once deleted, this action cannot be undone.',
+                                                style: TextStyle(
+                                                  color: Color.fromRGBO(84, 84, 84, 1),
+                                                  fontSize: 15,
+                                                  fontFamily: 'Montserrat',
+                                                  fontWeight: FontWeight.w500,
+                                                )),
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context)
+                                                    .pop(); // Close the dialog
+                                              },
+                                              child: Text(
+                                                'Cancel',
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontFamily: 'Montserrat',
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                              ),
+                                              style: TextButton.styleFrom(
+                                                backgroundColor: btnActive,
+                                                foregroundColor: Colors.white,
+                                                padding: EdgeInsets.symmetric(horizontal: 26, vertical: 10.0),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(8.0),
+                                                ),
+                                                elevation: 0,
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                _deleteTask(index);
+                                                Navigator.of(context)
+                                                    .pop(); // Close the dialog
+                                                _showSuccessDialog('Success', 'The task deleted successfully.', btnActive);
+                                              },
+                                              child: const Text('Delete',
+                                                  style: TextStyle(
+                                                    color:
+                                                    Color.fromRGBO(84, 84, 94, 1),
+                                                    fontSize: 15,
+                                                    fontFamily: 'Montserrat',
+                                                    fontWeight: FontWeight.w500,
+                                                  )),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
                                   icon: Icon(Icons.delete,
                                       color: deleteIconColor),
                                 ),
@@ -293,7 +370,7 @@ class _TasksTimerState extends State<TasksTimer> {
     });
   }
 
-  Future<void> _showAddTaskDialog() async {
+  Future<void> _showAddTaskDialog(Color btnActive) async {
     String newTask = '';
     return showDialog<void>(
       context: context,
@@ -343,24 +420,10 @@ class _TasksTimerState extends State<TasksTimer> {
                 ),
                 const SizedBox(height: 16),
                 Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(20),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      TextButton(
-                        onPressed: () {
-                          setState(() {
-                            Navigator.of(context).pop();
-                          });
-                        },
-                        child: const Text('Cancel',
-                            style: TextStyle(
-                              color: Color.fromRGBO(81, 81, 81, 1),
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.normal,
-                              fontSize: 15,
-                            )),
-                      ),
                       TextButton(
                         onPressed: () {
                           setState(() {
@@ -368,7 +431,7 @@ class _TasksTimerState extends State<TasksTimer> {
                               if (_tasks.contains(newTask)) {
                                 Navigator.of(context)
                                     .pop(); // Close input dialog
-                                _showErrorDialog(); // Task already exists
+                                _showErrorDialog(btnActive); // Task already exists
                               } else {
                                 // Find first checked task
                                 int insertIndex = -1;
@@ -394,16 +457,24 @@ class _TasksTimerState extends State<TasksTimer> {
                                 _tasksCount++;
                                 Navigator.of(context)
                                     .pop(); // Close the input dialog
-                                _showSuccessDialog(); // Show success dialog
+                                _showSuccessDialog('Success', 'The task added successfully.', btnActive); // Show success dialog
                               }
                             }
                           });
                         },
-                        child: const Text('Save',
+                        style: TextButton.styleFrom(
+                          backgroundColor: btnActive,
+                          foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(horizontal: 60, vertical: 10.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: Text('Save',
                             style: TextStyle(
-                              color: Color.fromRGBO(120, 201, 1, 1),
                               fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.normal,
+                              fontWeight: FontWeight.bold,
                               fontSize: 15,
                             )),
                       )
@@ -418,56 +489,88 @@ class _TasksTimerState extends State<TasksTimer> {
     );
   }
 
-  void _showErrorDialog() {
+  void _showErrorDialog(Color btnActive) {
     AwesomeDialog(
+      padding: EdgeInsets.only(bottom: 10),
+      bodyHeaderDistance: 30,
       width: 400,
       buttonsBorderRadius: BorderRadius.circular(10),
       context: context,
-      dialogType: DialogType.noHeader, // Keep the error dialog type
+      headerAnimationLoop: false,
+      dialogType: DialogType.noHeader,  // Remove default header
       animType: AnimType.bottomSlide,
       title: 'Error',
-      titleTextStyle: const TextStyle(
+      titleTextStyle: TextStyle(
+        color: Color.fromRGBO(0, 0, 0, 0.803921568627451),
+        fontSize: 20,
         fontFamily: 'Montserrat',
         fontWeight: FontWeight.bold,
-        fontSize: 22,
       ),
-      desc: 'Task already exists in the list!',
+      desc: 'This task is already added in the list.',
       descTextStyle: const TextStyle(
         color: Color.fromRGBO(81, 81, 81, 1),
         fontFamily: 'Montserrat',
-        fontWeight: FontWeight.w300,
+        fontWeight: FontWeight.w500,
         fontSize: 14,
       ),
       btnOkOnPress: () {},
-      btnOkColor: const Color.fromRGBO(120, 201, 1, 0.5),
+      btnOkColor: btnActive,
       btnOkText: 'Okay',
+      customHeader: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          color: Colors.red,
+        ),
+        padding: EdgeInsets.all(15),
+        child: Icon(
+          Icons.warning_rounded,  // Warning icon
+          size: 50,
+          color: Colors.white,
+        ),
+      ),
     ).show();
   }
 
-  void _showSuccessDialog() {
-    // Lets use switch 
+  void _showSuccessDialog(String title, String desc, Color btnActive) {
+    // Lets use switch
     AwesomeDialog(
-      width: 405,
+      padding: EdgeInsets.only(bottom: 10),
+      bodyHeaderDistance: 30,
+      width: 400,
       buttonsBorderRadius: BorderRadius.circular(10),
       context: context,
-      dialogType: DialogType.noHeader,
+      headerAnimationLoop: false,
+      dialogType: DialogType.noHeader,  // Remove default header
       animType: AnimType.bottomSlide,
-      title: 'Success',
-      titleTextStyle: const TextStyle(
+      title: title,
+      titleTextStyle: TextStyle(
+        color: Color.fromRGBO(0, 0, 0, 0.803921568627451),
+        fontSize: 20,
         fontFamily: 'Montserrat',
         fontWeight: FontWeight.bold,
-        fontSize: 22,
       ),
-      desc: 'Task added successfully!',
+      desc: desc,
       descTextStyle: const TextStyle(
         color: Color.fromRGBO(81, 81, 81, 1),
         fontFamily: 'Montserrat',
-        fontWeight: FontWeight.w300,
+        fontWeight: FontWeight.w500,
         fontSize: 14,
       ),
       btnOkOnPress: () {},
-      btnOkColor: const Color.fromRGBO(120, 201, 1, 0.5),
+      btnOkColor: btnActive,
       btnOkText: 'Okay',
+      customHeader: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+            color: btnActive,
+        ),   // Your custom header color
+        padding: EdgeInsets.all(15),
+        child: Icon(
+              Icons.check,
+              size: 50,
+              color: Colors.white,
+            ),
+        ),
     ).show();
   }
 
