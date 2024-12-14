@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:studya_io/custom_nav_bar_icons_icons.dart';
 import 'package:studya_io/screens/flashcards_page/flashcards_main.dart';
@@ -57,9 +58,9 @@ class MainNavBarState extends State<MainNavBar> {
                       color: Color.fromRGBO(112, 182, 1, 1), width: 3),
                 ),
                 backgroundColor: const Color.fromRGBO(241, 241, 241, 1),
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(15),
                 gap: 8,
-                iconSize: 25,
+                iconSize: 22.sp,
                 activeColor: const Color.fromRGBO(112, 182, 1, 1),
                 color: const Color.fromRGBO(84, 84, 84, 1),
                 tabs: const [

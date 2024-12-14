@@ -5,7 +5,7 @@ import 'package:hive/hive.dart';
 
 class SettingsModel extends ChangeNotifier {
   // Profile settings
-  String _userName = 'Ferson'; // Default name
+  String _userName = 'User'; // Default name
   String get userName => _userName;
 
   // Load the username from Hive when the app starts

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:studya_io/screens/pomodoro_timer_page/pomodoro_timer.dart';
 
 class TimerCard extends StatefulWidget {
@@ -23,8 +24,8 @@ class _TimerCardState extends State<TimerCard> {
     final minutesStr = twoDigits(widget.minutes);
     final secondsStr = twoDigits(widget.seconds);
 
-    double hoursfontSize = 70;
-    double secondsFontSize = 70;
+    double hoursfontSize = 60.sp;
+    double secondsFontSize = 60.sp;
     if (minutesStr.length > 2) {
       hoursfontSize = 55;
       secondsFontSize = 55;
@@ -53,19 +54,19 @@ class _TimerCardState extends State<TimerCard> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: MediaQuery.of(context).size.width / 3.2,
-              height: 170,
+              width: MediaQuery.of(context).size.width / 3,
+              height: MediaQuery.of(context).size.height / 5,
               decoration: BoxDecoration(
                 color: const Color(0xfff5f5f5),
                 borderRadius: BorderRadius.circular(10),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color.fromRGBO(195, 193, 193, 0.5),
-                    offset: Offset(0, 2),
-                    blurRadius: 4,
-                    spreadRadius: 4,
-                  ),
-                ],
+                // boxShadow: const [
+                //   BoxShadow(
+                //     color: Color.fromRGBO(195, 193, 193, 0.5),
+                //     offset: Offset(0, 2),
+                //     blurRadius: 4,
+                //     spreadRadius: 4,
+                //   ),
+                // ],
               ),
               child: Center(
                   child: Text(
@@ -79,29 +80,29 @@ class _TimerCardState extends State<TimerCard> {
                 ),
               )),
             ),
-            const SizedBox(width: 25),
-            const Text(':',
+            20.horizontalSpace,
+            Text(':',
                 style: TextStyle(
                   color: Color.fromRGBO(195, 193, 193, 1),
                   fontFamily: 'MuseoModerno',
                   fontWeight: FontWeight.bold,
-                  fontSize: 50,
+                  fontSize: 50.sp,
                 )),
-            const SizedBox(width: 25),
+            20.horizontalSpace,
             Container(
-              width: MediaQuery.of(context).size.width / 3.2,
-              height: 170,
+              width: MediaQuery.of(context).size.width / 3,
+              height: MediaQuery.of(context).size.height / 5,
               decoration: BoxDecoration(
                 color: const Color(0xfff5f5f5),
                 borderRadius: BorderRadius.circular(10),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color.fromRGBO(195, 193, 193, 0.5),
-                    offset: Offset(0, 2),
-                    blurRadius: 4,
-                    spreadRadius: 4,
-                  ),
-                ],
+                // boxShadow: const [
+                //   BoxShadow(
+                //     color: Color.fromRGBO(195, 193, 193, 0.5),
+                //     offset: Offset(0, 2),
+                //     blurRadius: 4,
+                //     spreadRadius: 4,
+                //   ),
+                // ],
               ),
               child: Center(
                   child: Text(

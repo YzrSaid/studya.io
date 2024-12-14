@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:studya_io/models/settings_model.dart';
 import 'package:studya_io/models/additionalsettings_model.dart';
@@ -23,17 +24,18 @@ class _SettingsSoundsState extends State<SettingsSounds> {
                 elevation: 0,
                 color: const Color.fromRGBO(254, 254, 254, 1),
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 10, 10, 15),
+                  padding: const EdgeInsets.fromLTRB(13, 8, 10, 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
-                          const Text(
+                          Text(
                             'Alarm Sound',
+                            textScaleFactor: 1,
                             style: TextStyle(
                               color: Color.fromRGBO(84, 84, 84, 1),
-                              fontSize: 16.5,
+                              fontSize: 15.5.sp,
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.w500,
                             ),
@@ -45,28 +47,48 @@ class _SettingsSoundsState extends State<SettingsSounds> {
                               dropdownColor:
                               const Color.fromRGBO(250, 249, 246, 1),
                               elevation: 0,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Color.fromRGBO(84, 84, 84, 1),
-                                fontSize: 16.5,
+                                fontSize: 14.sp,
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w500,
                               ),
-                              items: const [
+                              items: [
                                 DropdownMenuItem(
                                   value: 'Sound 1',
-                                  child: Text('Default'),
+                                  child: Text('Default',
+                                  style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),),
                                 ),
                                 DropdownMenuItem(
                                   value: 'Sound 2',
-                                  child: Text('Digital Beep'),
+                                  child: Text('Digital Beep',
+                                    style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),),
                                 ),
                                 DropdownMenuItem(
                                   value: 'Sound 3',
-                                  child: Text('Bliss'),
+                                  child: Text('Bliss',
+                                    style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),),
                                 ),
                                 DropdownMenuItem(
                                   value: 'Sound 4',
-                                  child: Text('Classic'),
+                                  child: Text('Classic',
+                                    style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),),
                                 ),
                               ],
                               onChanged: (newValue) {
@@ -80,32 +102,44 @@ class _SettingsSoundsState extends State<SettingsSounds> {
                           )
                         ],
                       ),
-                      const SizedBox(height: 3),
+                      10.verticalSpace,
                       // Alarm Volume
                       Row(
                         children: [
-                          const Text(
+                          Text(
                             'Alarm Volume',
+                            textScaleFactor: 1,
                             style: TextStyle(
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.w500,
                               color: Color.fromRGBO(84, 84, 84, 1),
-                              fontSize: 16.5,
+                              fontSize: 15.5.sp,
                             ),
                           ),
                           const Spacer(),
-                          Slider(
-                            value: settingsValue.volumeAlarmSound,
-                            onChanged: (newValue) {
-                              setState(() {
-                                settingsValue.setVolumeAlarmSound(newValue);
-                                print('Volume: ${settingsValue.volumeAlarmSound}');
-                              });
-                            },
-                            min: 0.0,
-                            max: 1.0,
-                            activeColor: const Color.fromRGBO(112, 182, 1, 1),
-                            inactiveColor: const Color.fromRGBO(112, 182, 1, 0.3),
+
+                          Container(
+                            width: 127.w,
+                            child: SliderTheme(
+                              data: SliderTheme.of(context).copyWith(
+                                trackHeight: 6.5, // Customize track height
+                                thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10.5), // Customize thumb size
+                                overlayShape: RoundSliderOverlayShape(overlayRadius: 1), // Customize overlay size
+                              ),
+                              child: Slider(
+                                value: settingsValue.volumeAlarmSound,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    settingsValue.setVolumeAlarmSound(newValue);
+                                    print('Volume: ${settingsValue.volumeAlarmSound}');
+                                  });
+                                },
+                                min: 0.0,
+                                max: 1.0,
+                                activeColor: const Color.fromRGBO(112, 182, 1, 1),
+                                inactiveColor: const Color.fromRGBO(112, 182, 1, 0.3),
+                              ),
+                            ),
                           ),
                         ],
                       ),

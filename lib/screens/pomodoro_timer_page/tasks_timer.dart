@@ -1,11 +1,10 @@
 // ignore_for_file: unused_element
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:studya_io/custom_timer_icons_icons.dart';
 import 'package:studya_io/screens/pomodoro_timer_page/pomodoro_timer.dart';
 
-import '../../models/additionalsettings_model.dart';
 
 class TasksTimer extends StatefulWidget {
   final TimerState currentState;
@@ -41,7 +40,7 @@ class _TasksTimerState extends State<TasksTimer> {
         addTaskButtonColor = const Color.fromRGBO(120, 201, 1, 1);
         taskLineColor = const Color.fromRGBO(120, 201, 1, 1);
         deleteIconColor = const Color.fromRGBO(81, 81, 81, 1);
-        btnActive = const Color.fromRGBO(120, 201, 1, 0.5);
+        btnActive = const Color.fromRGBO(120, 201, 1, 1);
         break;
       case TimerState.shortbreak:
         timerTitleColor = const Color.fromRGBO(61, 61, 61, 1);
@@ -49,7 +48,7 @@ class _TasksTimerState extends State<TasksTimer> {
         addTaskButtonColor = const Color.fromRGBO(61, 61, 61, 1);
         taskLineColor = const Color.fromRGBO(61, 61, 61, 1);
         deleteIconColor = const Color.fromRGBO(81, 81, 81, 1);
-        btnActive = const Color.fromRGBO(61, 61, 61, 0.5);
+        btnActive = const Color.fromRGBO(61, 61, 61, 1);
         break;
       case TimerState.longbreak:
         timerTitleColor = const Color.fromARGB(255, 0, 0, 0);
@@ -57,12 +56,12 @@ class _TasksTimerState extends State<TasksTimer> {
         addTaskButtonColor = const Color.fromARGB(255, 0, 0, 0);
         taskLineColor = const Color.fromARGB(255, 0, 0, 0);
         deleteIconColor = const Color.fromRGBO(81, 81, 81, 1);
-        btnActive = const Color.fromARGB(205, 0, 0, 0);
+        btnActive = const Color.fromARGB(255, 0, 0, 0);
         break;
     }
     return Container(
-      height: 310,
-      width: 325,
+      width: MediaQuery.of(context).size.width / 1.25,
+      height: MediaQuery.of(context).size.height / 2.8,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
@@ -70,7 +69,7 @@ class _TasksTimerState extends State<TasksTimer> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(15, 4, 15, 8),
+            padding: const EdgeInsets.fromLTRB(10, 4, 10, 8),
             child: Container(
               decoration: BoxDecoration(
                 border: Border(
@@ -88,7 +87,7 @@ class _TasksTimerState extends State<TasksTimer> {
                       color: timerTitleColor,
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.bold,
-                      fontSize: 22,
+                      fontSize: 20.sp,
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -98,19 +97,19 @@ class _TasksTimerState extends State<TasksTimer> {
                       color: taskCountColor,
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.bold,
-                      fontSize: 22,
+                      fontSize: 20.sp,
                     ),
                   ),
                   const Spacer(),
                   SizedBox(
-                    width: 36,
+                    width: 30.w,
                     child: IconButton(
                       highlightColor: Colors.transparent,
                       onPressed: () => {
                         _showAddTaskDialog(btnActive),
                       },
                       icon: Icon(CustomTimerIcons.plus,
-                          size: 21, color: addTaskButtonColor),
+                          size: 20.r, color: addTaskButtonColor),
                     ),
                   ),
                 ],
@@ -214,11 +213,26 @@ class _TasksTimerState extends State<TasksTimer> {
                                               child: Text(
                                                 'Cancel',
                                                 style: TextStyle(
+                                                  color: Color.fromRGBO(84, 84, 94, 1),
                                                   fontSize: 15,
                                                   fontFamily: 'Montserrat',
-                                                  fontWeight: FontWeight.normal,
+                                                  fontWeight: FontWeight.w500,
                                                 ),
                                               ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                _deleteTask(index);
+                                                Navigator.of(context)
+                                                    .pop(); // Close the dialog
+                                                _showSuccessDialog('Success', 'The task has been deleted successfully!', btnActive);
+                                              },
+                                              child: const Text('Delete',
+                                                  style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontFamily: 'Montserrat',
+                                                    fontWeight: FontWeight.w500,
+                                                  )),
                                               style: TextButton.styleFrom(
                                                 backgroundColor: btnActive,
                                                 foregroundColor: Colors.white,
@@ -228,22 +242,6 @@ class _TasksTimerState extends State<TasksTimer> {
                                                 ),
                                                 elevation: 0,
                                               ),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                _deleteTask(index);
-                                                Navigator.of(context)
-                                                    .pop(); // Close the dialog
-                                                _showSuccessDialog('Success', 'The task deleted successfully.', btnActive);
-                                              },
-                                              child: const Text('Delete',
-                                                  style: TextStyle(
-                                                    color:
-                                                    Color.fromRGBO(84, 84, 94, 1),
-                                                    fontSize: 15,
-                                                    fontFamily: 'Montserrat',
-                                                    fontWeight: FontWeight.w500,
-                                                  )),
                                             ),
                                           ],
                                         );
@@ -268,8 +266,6 @@ class _TasksTimerState extends State<TasksTimer> {
       ),
     );
   }
-
-  // Move your methods inside the _TasksTimerState class
 
   void _editTask(int index) {
     TextEditingController editController = TextEditingController();

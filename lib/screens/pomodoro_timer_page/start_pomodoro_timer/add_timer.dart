@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:provider/provider.dart';
 import 'package:studya_io/models/additionalsettings_model.dart';
@@ -77,6 +78,10 @@ class _AddTimerState extends State<AddTimer> {
         context,
         MaterialPageRoute(
           builder: (context) => PomodoroTimer(
+              isAutoStart: Provider.of<AdditionalSettingsModel>(context, listen: false).isAutoStartSwitched,
+              alarmSound:  Provider.of<AdditionalSettingsModel>(context, listen: false).alarmSound,
+              isThisASavedTimer: false,
+              sessionKey: 1,
               pomodoroMinutes: pomodoroMinutes,
               shortbreakMinutes: shortbreakMinutes,
               longbreakMinutes: longbreakMinutes),
@@ -113,50 +118,52 @@ class _AddTimerState extends State<AddTimer> {
       builder: (context, value, child) => Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: AppBar(
-          title: const Text('new session'),
+          title: const Text('new session',
+          textScaleFactor: 1,),
           centerTitle: true,
-          titleTextStyle: const TextStyle(
+          titleTextStyle: TextStyle(
             color: Color.fromRGBO(112, 182, 1, 1),
             fontFamily: 'MuseoModerno',
             fontWeight: FontWeight.bold,
-            fontSize: 27,
+            fontSize: 23.sp,
           ),
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 40, 20, 0),
+            padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
             child: Column(
               children: [
-                const SizedBox(
+                SizedBox(
                   child: Image(
-                    width: 100,
-                    height: 100,
+                    width: 100.w,
+                    height: 100.h,
                     fit: BoxFit.contain,
                     alignment: Alignment.center,
                     image: AssetImage('assets/images/read.png'),
                   ),
                 ),
-                const SizedBox(height: 30),
+                30.verticalSpace,
                 // Dropdown Button
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: SizedBox(
-                      width: 250,
-                      height: 37,
+                      width: 240.w,
+                      height: 40.h,
                       child: DropdownButton<String>(
                         borderRadius: BorderRadius.circular(10),
-                        menuMaxHeight: 400,
-                        menuWidth: 280,
-                        itemHeight: 55,
+                        menuMaxHeight: 400.h,
+                        menuWidth: 280.w,
+                        itemHeight: 65,
                         padding: const EdgeInsets.symmetric(horizontal: 22),
                         elevation: 1,
                         icon: const Icon(Icons.keyboard_arrow_down),
                         isExpanded: false,
-                        hint: const Text(
+                        hint: Text(
                           'Choose a study session',
+                          textScaleFactor: 1,
                           style: TextStyle(
                             color: Color.fromRGBO(84, 84, 84, 1),
-                            fontSize: 14,
+                            fontSize: 13.sp,
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.w700,
                           ),
@@ -179,14 +186,14 @@ class _AddTimerState extends State<AddTimer> {
                               child: Row(
                                 children: [
                                   RichText(
-                                    text: const TextSpan(
+                                    text: TextSpan(
                                       children: [
                                         TextSpan(
                                           text: 'Baby Step\n',
                                           style: TextStyle(
                                             color:
                                                 Color.fromRGBO(84, 84, 84, 1),
-                                            fontSize: 14,
+                                            fontSize: 13.sp,
                                             fontFamily: 'Montserrat',
                                             fontWeight: FontWeight.w700,
                                             height: 1.5,
@@ -197,7 +204,7 @@ class _AddTimerState extends State<AddTimer> {
                                           style: TextStyle(
                                             color:
                                                 Color.fromRGBO(84, 84, 84, 1),
-                                            fontSize: 14,
+                                            fontSize: 12.sp,
                                             fontFamily: 'Montserrat',
                                             fontWeight: FontWeight.w400,
                                             height: 1.5,
@@ -225,14 +232,14 @@ class _AddTimerState extends State<AddTimer> {
                               child: Row(
                                 children: [
                                   RichText(
-                                    text: const TextSpan(
+                                    text: TextSpan(
                                       children: [
                                         TextSpan(
                                           text: 'Popular\n',
                                           style: TextStyle(
                                             color:
                                                 Color.fromRGBO(84, 84, 84, 1),
-                                            fontSize: 14,
+                                            fontSize: 13.sp,
                                             fontFamily: 'Montserrat',
                                             fontWeight: FontWeight.w700,
                                             height: 1.5,
@@ -243,7 +250,7 @@ class _AddTimerState extends State<AddTimer> {
                                           style: TextStyle(
                                             color:
                                                 Color.fromRGBO(84, 84, 84, 1),
-                                            fontSize: 14,
+                                            fontSize: 12.sp,
                                             fontFamily: 'Montserrat',
                                             fontWeight: FontWeight.w400,
                                             height: 1.5,
@@ -271,14 +278,14 @@ class _AddTimerState extends State<AddTimer> {
                               child: Row(
                                 children: [
                                   RichText(
-                                    text: const TextSpan(
+                                    text: TextSpan(
                                       children: [
                                         TextSpan(
                                           text: 'Medium\n',
                                           style: TextStyle(
                                             color:
                                                 Color.fromRGBO(84, 84, 84, 1),
-                                            fontSize: 14,
+                                            fontSize: 13.sp,
                                             fontFamily: 'Montserrat',
                                             fontWeight: FontWeight.w700,
                                             height: 1.5,
@@ -289,7 +296,7 @@ class _AddTimerState extends State<AddTimer> {
                                           style: TextStyle(
                                             color:
                                                 Color.fromRGBO(84, 84, 84, 1),
-                                            fontSize: 14,
+                                            fontSize: 12.sp,
                                             fontFamily: 'Montserrat',
                                             fontWeight: FontWeight.w400,
                                             height: 1.5,
@@ -317,14 +324,14 @@ class _AddTimerState extends State<AddTimer> {
                               child: Row(
                                 children: [
                                   RichText(
-                                    text: const TextSpan(
+                                    text: TextSpan(
                                       children: [
                                         TextSpan(
                                           text: 'Extended\n',
                                           style: TextStyle(
                                             color:
                                                 Color.fromRGBO(84, 84, 84, 1),
-                                            fontSize: 14,
+                                            fontSize: 13.sp,
                                             fontFamily: 'Montserrat',
                                             fontWeight: FontWeight.w700,
                                             height: 1.5,
@@ -335,7 +342,7 @@ class _AddTimerState extends State<AddTimer> {
                                           style: TextStyle(
                                             color:
                                                 Color.fromRGBO(84, 84, 84, 1),
-                                            fontSize: 14,
+                                            fontSize: 12.sp,
                                             fontFamily: 'Montserrat',
                                             fontWeight: FontWeight.w400,
                                             height: 1.5,
@@ -348,16 +355,15 @@ class _AddTimerState extends State<AddTimer> {
                               ),
                             ),
                           ),
-                          const DropdownMenuItem<String>(
+                          DropdownMenuItem<String>(
                             value: 'Custom',
                             child: Text(
                               'Custom',
                               style: TextStyle(
                                 color: Color.fromRGBO(84, 84, 84, 1),
-                                fontSize: 14,
+                                fontSize: 13.sp,
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w700,
-                                height: 1.5,
                               ),
                             ),
                           ),
@@ -371,47 +377,47 @@ class _AddTimerState extends State<AddTimer> {
                         dropdownColor: const Color.fromRGBO(250, 249, 246, 1),
                         selectedItemBuilder: (BuildContext context) {
                           return [
-                            const Text(
+                            Text(
                               'Baby Step',
                               style: TextStyle(
                                 color: Color.fromRGBO(84, 84, 84, 1),
-                                fontSize: 14,
+                                fontSize: 13.sp,
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                            const Text(
+                            Text(
                               'Popular',
                               style: TextStyle(
                                 color: Color.fromRGBO(84, 84, 84, 1),
-                                fontSize: 14,
+                                fontSize: 13.sp,
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                            const Text(
+                            Text(
                               'Medium',
                               style: TextStyle(
                                 color: Color.fromRGBO(84, 84, 84, 1),
-                                fontSize: 14,
+                                fontSize: 13.sp,
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                            const Text(
+                            Text(
                               'Extended',
                               style: TextStyle(
                                 color: Color.fromRGBO(84, 84, 84, 1),
-                                fontSize: 14,
+                                fontSize: 13.sp,
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                            const Text(
+                            Text(
                               'Custom',
                               style: TextStyle(
                                 color: Color.fromRGBO(84, 84, 84, 1),
-                                fontSize: 14,
+                                fontSize: 13.sp,
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w700,
                               ),
@@ -442,18 +448,19 @@ class _AddTimerState extends State<AddTimer> {
                     ),
                   ),
                 ),
-
+          
                 // Additional Settings
                 const SizedBox(height: 20),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(left: 10),
                   child: Align(
                     alignment: Alignment.bottomLeft,
                     child: Text(
                       'Additional Settings',
+                      textScaleFactor: 1,
                       style: TextStyle(
                         color: Color.fromRGBO(84, 84, 84, 1),
-                        fontSize: 15,
+                        fontSize: 14.sp,
                         fontFamily: 'Montserrat',
                         fontWeight: FontWeight.bold,
                       ),
@@ -469,25 +476,26 @@ class _AddTimerState extends State<AddTimer> {
                         //Alarm Sound
                         Row(
                           children: [
-                            const Text(
+                            Text(
                               'Alarm Sound',
+                              textScaleFactor: 1,
                               style: TextStyle(
                                 color: Color.fromRGBO(84, 84, 84, 1),
-                                fontSize: 15,
+                                fontSize: 13.sp,
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            const SizedBox(width: 100),
+                            100.horizontalSpace,
                             Expanded(
                               child: DropdownButton(
                                 isExpanded: true,
                                 dropdownColor:
                                     const Color.fromRGBO(250, 249, 246, 1),
                                 elevation: 0,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: Color.fromRGBO(84, 84, 84, 1),
-                                  fontSize: 15,
+                                  fontSize: 13.sp,
                                   fontFamily: 'Montserrat',
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -521,17 +529,18 @@ class _AddTimerState extends State<AddTimer> {
                             )
                           ],
                         ),
-
-                        const SizedBox(height: 5),
-
+          
+                        5.verticalSpace,
+          
                         // Auto Start Switch
                         Row(
                           children: [
-                            const Text(
+                            Text(
                               'Auto Start',
+                              textScaleFactor: 1,
                               style: TextStyle(
                                 color: Color.fromRGBO(84, 84, 84, 1),
-                                fontSize: 15,
+                                fontSize: 13.sp,
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w500,
                               ),
@@ -539,8 +548,8 @@ class _AddTimerState extends State<AddTimer> {
                             const Spacer(),
                             FlutterSwitch(
                               activeColor: const Color.fromRGBO(112, 182, 1, 1),
-                              width: 49.0,
-                              height: 25.0,
+                              width: 44.0,
+                              height: 22.0,
                               toggleSize: 20.0,
                               value: value.isAutoStartSwitched,
                               onToggle: (newValue) {
@@ -555,9 +564,9 @@ class _AddTimerState extends State<AddTimer> {
                     ),
                   ),
                 ),
-
-                const SizedBox(width: 20),
-                const SizedBox(height: 40),
+          
+                20.horizontalSpace,
+                10.verticalSpace,
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Row(
@@ -575,19 +584,19 @@ class _AddTimerState extends State<AddTimer> {
                               backgroundColor:
                                   const Color.fromRGBO(112, 182, 1, 1),
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 30, vertical: 15),
+                                  horizontal: 23, vertical: 12),
                               textStyle: const TextStyle(
-                                fontFamily: 'Monterrat',
-                                fontSize: 18,
+                                fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            child: const Text(
+                            child: Text(
                               'Start',
+                              textScaleFactor: 1,
                               style: TextStyle(
                                 letterSpacing: 2.5,
                                 color: Colors.white,
-                                fontSize: 25,
+                                fontSize: 23.sp,
                                 fontFamily: 'Montserrat',
                               ),
                             ),
@@ -612,14 +621,14 @@ class _AddTimerState extends State<AddTimer> {
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             color: Color.fromRGBO(84, 84, 84, 1),
-            fontSize: 20,
+            fontSize: 16.sp,
             fontFamily: 'Montserrat',
             fontWeight: FontWeight.w600,
           ),
         ),
-        const SizedBox(width: 80),
+        70.horizontalSpace,
         Expanded(
           child: TextFormField(
             controller: controller,

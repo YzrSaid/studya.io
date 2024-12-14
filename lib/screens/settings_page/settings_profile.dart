@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:studya_io/models/settings_model.dart';
 
@@ -13,7 +14,7 @@ class SettingsProfile extends StatelessWidget {
         color: const Color.fromARGB(255, 255, 255, 255),
         elevation: 0,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(15, 10, 10, 15),
+          padding: const EdgeInsets.fromLTRB(13, 10, 10, 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -24,8 +25,8 @@ class SettingsProfile extends StatelessWidget {
                     children: [
                       Text(
                         settingsModel.userName, // Display the loaded name
-                        style: const TextStyle(
-                          fontSize: 16.5,
+                        style: TextStyle(
+                          fontSize: 16.5.sp,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Montserrat',
                           color: Color.fromRGBO(112, 182, 1, 1),
@@ -33,10 +34,11 @@ class SettingsProfile extends StatelessWidget {
                       ),
                       const Spacer(),
                       TextButton(
-                        child: const Text(
+                        child: Text(
                           'Change Name',
+                          textScaleFactor: 1,
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 15.sp,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'Montserrat',
                             color: Color.fromRGBO(84, 84, 84, 1),
@@ -56,7 +58,7 @@ class SettingsProfile extends StatelessWidget {
                                 title: const Text('Change Name',
                                     style: TextStyle(
                                       color: Color.fromRGBO(84, 84, 84, 1),
-                                      fontSize: 20,
+                                      fontSize: 16,
                                       fontFamily: 'Montserrat',
                                       fontWeight: FontWeight.w700,
                                     )),
@@ -83,21 +85,22 @@ class SettingsProfile extends StatelessWidget {
                                                     84, 84, 84, 1)),
                                       );
                                     },
-                                    decoration: const InputDecoration(
+                                    decoration: InputDecoration(
                                       hintText: 'Enter new name',
                                       hintStyle: TextStyle(
                                           fontFamily: 'Montserrat',
+                                          fontSize: 14.sp,
                                           fontWeight: FontWeight.w400),
                                       focusedBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
                                           color: Color.fromRGBO(84, 84, 84,
-                                              1), // Change this to your desired color
+                                              1),
                                         ),
                                       ),
                                       enabledBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
                                           color: Color.fromRGBO(84, 84, 84,
-                                              1), // Set color for the default state (unfocused)
+                                              1),
                                         ),
                                       ),
                                     ),
@@ -105,10 +108,10 @@ class SettingsProfile extends StatelessWidget {
                                 ),
                                 actions: [
                                   TextButton(
-                                    child: const Text('Cancel',
+                                    child: Text('Cancel',
                                         style: TextStyle(
                                           color: Color.fromRGBO(84, 84, 94, 1),
-                                          fontSize: 15,
+                                          fontSize: 13.sp,
                                           fontFamily: 'Montserrat',
                                           fontWeight: FontWeight.w500,
                                         )),
@@ -117,11 +120,21 @@ class SettingsProfile extends StatelessWidget {
                                     },
                                   ),
                                   TextButton(
-                                    child: const Text(
+                                    style: TextButton.styleFrom(
+                                      backgroundColor:
+                                      Color.fromRGBO(112, 182, 1, 1),
+                                      foregroundColor: Colors.white,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 17, vertical: 5.0),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8.0),
+                                      ),
+                                      elevation: 0,
+                                    ),
+                                    child: Text(
                                       'Save',
                                       style: TextStyle(
-                                        color: Color.fromRGBO(112, 182, 1, 1),
-                                        fontSize: 15,
+                                        fontSize: 13.sp,
                                         fontFamily: 'Montserrat',
                                         fontWeight: FontWeight.w600,
                                       ),
