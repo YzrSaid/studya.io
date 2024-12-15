@@ -100,6 +100,12 @@ class _FlashcardSetPageState extends State<FlashcardSetPage> {
       },
       btnOkColor: const Color.fromRGBO(112, 182, 1, 1),
       btnOkText: 'Okay',
+      buttonsTextStyle: TextStyle(
+        fontSize: 14.sp,
+        color: Colors.white,
+        fontFamily: 'Montserrat',
+        fontWeight: FontWeight.w600,
+      ),
       customHeader: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
@@ -349,6 +355,12 @@ class _FlashcardSetPageState extends State<FlashcardSetPage> {
       },
       btnOkColor: const Color.fromRGBO(112, 182, 1, 1),
       btnOkText: 'Okay',
+      buttonsTextStyle: TextStyle(
+        fontSize: 14.sp,
+        color: Colors.white,
+        fontFamily: 'Montserrat',
+        fontWeight: FontWeight.w600,
+      ),
       customHeader: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
@@ -393,6 +405,12 @@ class _FlashcardSetPageState extends State<FlashcardSetPage> {
       },
       btnOkColor: const Color.fromRGBO(112, 182, 1, 1),
       btnOkText: 'Okay',
+      buttonsTextStyle: TextStyle(
+        fontSize: 14.sp,
+        color: Colors.white,
+        fontFamily: 'Montserrat',
+        fontWeight: FontWeight.w600,
+      ),
       customHeader: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),

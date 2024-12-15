@@ -169,7 +169,7 @@ class _CreateTimerState extends State<CreateTimer> {
                     borderRadius: BorderRadius.circular(10),
                     menuMaxHeight: 400.h,
                     menuWidth: 280.w,
-                    itemHeight: 55,
+                    itemHeight: 65,
                     padding: const EdgeInsets.symmetric(horizontal: 22),
                     elevation: 1,
                     icon: const Icon(Icons.keyboard_arrow_down),
@@ -769,7 +769,7 @@ class _CreateTimerState extends State<CreateTimer> {
       }
     }
     AwesomeDialog(
-      padding: EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
       bodyHeaderDistance: 30,
       width: 400,
       buttonsBorderRadius: BorderRadius.circular(10),
@@ -797,6 +797,12 @@ class _CreateTimerState extends State<CreateTimer> {
       },
       btnOkColor: Color.fromRGBO(112, 182, 1, 1),
       btnOkText: 'Okay',
+      buttonsTextStyle: TextStyle(
+        fontSize: 14.sp,
+        color: Colors.white,
+        fontFamily: 'Montserrat',
+        fontWeight: FontWeight.w600,
+      ),
       customHeader: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),

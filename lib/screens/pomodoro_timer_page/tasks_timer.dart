@@ -487,7 +487,7 @@ class _TasksTimerState extends State<TasksTimer> {
 
   void _showErrorDialog(Color btnActive) {
     AwesomeDialog(
-      padding: EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
       bodyHeaderDistance: 30,
       width: 400,
       buttonsBorderRadius: BorderRadius.circular(10),
@@ -512,6 +512,12 @@ class _TasksTimerState extends State<TasksTimer> {
       btnOkOnPress: () {},
       btnOkColor: btnActive,
       btnOkText: 'Okay',
+      buttonsTextStyle: TextStyle(
+        fontSize: 14.sp,
+        color: Colors.white,
+        fontFamily: 'Montserrat',
+        fontWeight: FontWeight.w600,
+      ),
       customHeader: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
@@ -530,7 +536,7 @@ class _TasksTimerState extends State<TasksTimer> {
   void _showSuccessDialog(String title, String desc, Color btnActive) {
     // Lets use switch
     AwesomeDialog(
-      padding: EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
       bodyHeaderDistance: 30,
       width: 400,
       buttonsBorderRadius: BorderRadius.circular(10),
@@ -555,6 +561,12 @@ class _TasksTimerState extends State<TasksTimer> {
       btnOkOnPress: () {},
       btnOkColor: btnActive,
       btnOkText: 'Okay',
+      buttonsTextStyle: TextStyle(
+        fontSize: 14.sp,
+        color: Colors.white,
+        fontFamily: 'Montserrat',
+        fontWeight: FontWeight.w600,
+      ),
       customHeader: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),

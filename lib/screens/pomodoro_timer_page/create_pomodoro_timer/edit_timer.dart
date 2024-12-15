@@ -786,7 +786,7 @@ class _EditTimerState extends State<EditTimer> {
     }
 
     AwesomeDialog(
-      padding: EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
       bodyHeaderDistance: 30,
       width: 400,
       buttonsBorderRadius: BorderRadius.circular(10),
@@ -814,6 +814,12 @@ class _EditTimerState extends State<EditTimer> {
       },
       btnOkColor: Color.fromRGBO(112, 182, 1, 1),
       btnOkText: 'Okay',
+      buttonsTextStyle: TextStyle(
+        fontSize: 14.sp,
+        color: Colors.white,
+        fontFamily: 'Montserrat',
+        fontWeight: FontWeight.w600,
+      ),
       customHeader: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),

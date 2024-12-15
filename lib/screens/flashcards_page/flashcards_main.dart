@@ -78,6 +78,12 @@ class _FlashcardsState extends State<FlashcardsMain> {
       },
       btnOkColor: const Color.fromRGBO(112, 182, 1, 1),
       btnOkText: 'Okay',
+      buttonsTextStyle: TextStyle(
+        fontSize: 14.sp,
+        color: Colors.white,
+        fontFamily: 'Montserrat',
+        fontWeight: FontWeight.w600,
+      ),
       customHeader: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
@@ -85,7 +91,7 @@ class _FlashcardsState extends State<FlashcardsMain> {
         ),
         padding: EdgeInsets.all(15),
         child: Icon(
-          Icons.warning_rounded,  // Warning icon
+          Icons.warning_rounded, // Warning icon
           size: 50,
           color: Colors.white,
         ),
@@ -173,20 +179,26 @@ class _FlashcardsState extends State<FlashcardsMain> {
                   title: 'Success',
                   titleTextStyle: TextStyle(
                     color: Color.fromRGBO(0, 0, 0, 0.803921568627451),
-                    fontSize: 20,
+                    fontSize: 20.sp,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.bold,
                   ),
                   desc: 'The flashcard set has been deleted successfully!',
-                  descTextStyle: const TextStyle(
+                  descTextStyle: TextStyle(
                     color: Color.fromRGBO(81, 81, 81, 1),
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w500,
-                    fontSize: 14,
+                    fontSize: 14.sp,
                   ),
                   btnOkOnPress: () {},
                   btnOkColor: Color.fromRGBO(112, 182, 1, 1),
                   btnOkText: 'Okay',
+                  buttonsTextStyle: TextStyle(
+                    fontSize: 14.sp,
+                    color: Colors.white,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w600,
+                  ),
                   customHeader: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
@@ -225,6 +237,7 @@ class _FlashcardsState extends State<FlashcardsMain> {
       },
     );
   }
+
   void _saveFlashcardSet() {
     String setTitle = setTitleController.text.trim();
     String setDescription = setDescriptionController.text.trim();
@@ -260,9 +273,9 @@ class _FlashcardsState extends State<FlashcardsMain> {
           dialogType: DialogType.noHeader,
           animType: AnimType.bottomSlide,
           title: 'Success',
-          titleTextStyle: const TextStyle(
+          titleTextStyle: TextStyle(
             color: Color.fromRGBO(0, 0, 0, 0.803921568627451),
-            fontSize: 20,
+            fontSize: 20.sp,
             fontFamily: 'Montserrat',
             fontWeight: FontWeight.bold,
           ),
@@ -271,11 +284,17 @@ class _FlashcardsState extends State<FlashcardsMain> {
             color: Color.fromRGBO(81, 81, 81, 1),
             fontFamily: 'Montserrat',
             fontWeight: FontWeight.w500,
-            fontSize: 13.sp,
+            fontSize: 14.sp,
           ),
           btnOkOnPress: () {},
           btnOkColor: const Color.fromRGBO(112, 182, 1, 1),
           btnOkText: 'Okay',
+          buttonsTextStyle: TextStyle(
+            fontSize: 14.sp,
+            color: Colors.white,
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w600,
+          ),
           customHeader: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
@@ -311,20 +330,77 @@ class _FlashcardsState extends State<FlashcardsMain> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Edit Flashcard Set"),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          title: Text("Edit Flashcard Set",
+              style: TextStyle(
+                color: Color.fromRGBO(84, 84, 84, 1),
+                fontSize: 20.sp,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.w700,
+              )),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15.sp,
+                  color: Color.fromRGBO(112, 182, 1, 1),
+                ),
                 controller: setTitleController,
-                decoration: const InputDecoration(hintText: "Enter Set Title"),
-                inputFormatters: [LengthLimitingTextInputFormatter(15)],
+                decoration: InputDecoration(
+                    labelText: 'Set title',
+                    labelStyle: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15.sp,
+                      color: Color.fromRGBO(84, 84, 94, 1),
+                    ),
+                    hintStyle: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15.sp,
+                      color: Color.fromRGBO(112, 182, 1, 1),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color.fromRGBO(112, 182, 1, 1)),
+                    ),
+                    hintText: "e.g. Socio 101"),
+                maxLength: 13,
               ),
               const SizedBox(height: 10),
               TextField(
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15.sp,
+                  color: Color.fromRGBO(112, 182, 1, 1),
+                ),
                 controller: setDescriptionController,
-                decoration:
-                    const InputDecoration(hintText: "Enter Description"),
+                decoration: InputDecoration(
+                    labelText: 'Description',
+                    labelStyle: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15.sp,
+                      color: Color.fromRGBO(84, 84, 94, 1),
+                    ),
+                    hintStyle: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15.sp,
+                      color: Color.fromRGBO(112, 182, 1, 1),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color.fromRGBO(112, 182, 1, 1)),
+                    ),
+                    hintText: "e.g. This is for Socio Exam."),
+                maxLength: 50,
               ),
             ],
           ),
@@ -335,9 +411,9 @@ class _FlashcardsState extends State<FlashcardsMain> {
                 setDescriptionController.clear();
                 Navigator.of(context).pop();
               },
-              child: const Text('Cancel',
+              child: Text('Cancel',
                   style: TextStyle(
-                    fontSize: 13,
+                    fontSize: 14.sp,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w500,
                     color: Color.fromRGBO(84, 84, 94, 1),
@@ -359,24 +435,146 @@ class _FlashcardsState extends State<FlashcardsMain> {
                     setDescriptionController.text.trim();
 
                 if (updatedTitle.isNotEmpty && updatedDescription.isNotEmpty) {
-                  setState(() {
-                    flashcardSetsBox.putAt(
-                      index,
-                      FlashcardSet(
-                        title: updatedTitle,
-                        description: updatedDescription,
-                      ),
-                    );
-                  });
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext dialogContext) {
+                      return AlertDialog(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        title: Text('Save Changes?',
+                            style: TextStyle(
+                              color: Color.fromRGBO(84, 84, 84, 1),
+                              fontSize: 18.sp,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w700,
+                            )),
+                        content: Container(
+                          width: 280.0,
+                          height: 50.0,
+                          child: Text(
+                              'These changes will be saved to this Flashcard set.',
+                              style: TextStyle(
+                                color: Color.fromRGBO(84, 84, 84, 1),
+                                fontSize: 13.sp,
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.w500,
+                              )),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(dialogContext)
+                                  .pop(); // Close the AlertDialog
+                            },
+                            child: Text(
+                              'Cancel',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.w500,
+                                color: Color.fromRGBO(84, 84, 94, 1),
+                              ),
+                            ),
+                          ),
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              backgroundColor: Color.fromRGBO(112, 182, 1, 1),
+                              foregroundColor: Colors.white,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 26, vertical: 10.0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              elevation: 0,
+                            ),
+                            onPressed: () {
+                              Navigator.of(dialogContext)
+                                  .pop(); // Close the AlertDialog
+                              setState(() {
+                                flashcardSetsBox.putAt(
+                                  index,
+                                  FlashcardSet(
+                                    title: updatedTitle,
+                                    description: updatedDescription,
+                                  ),
+                                );
+                              });
+                              //   show a modal success message
+                              AwesomeDialog(
+                                padding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
+                                bodyHeaderDistance: 30,
+                                width: 400,
+                                buttonsBorderRadius: BorderRadius.circular(10),
+                                context: context,
+                                headerAnimationLoop: false,
+                                dialogType: DialogType.noHeader,  // Remove default header
+                                animType: AnimType.bottomSlide,
+                                title: 'Success',
+                                titleTextStyle: TextStyle(
+                                  color: Color.fromRGBO(0, 0, 0, 0.803921568627451),
+                                  fontSize: 20.sp,
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                desc: 'Your changes have been saved successfully!',
+                                descTextStyle: TextStyle(
+                                  color: Color.fromRGBO(81, 81, 81, 1),
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp,
+                                ),
+                                btnOkOnPress: () {
+                                  Navigator.of(context)
+                                      .pop(); // Close the dialog
+                                },
+                                btnOkColor: Color.fromRGBO(112, 182, 1, 1),
+                                btnOkText: 'Okay',
+                                buttonsTextStyle: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: Colors.white,
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                customHeader: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                    color: Color.fromRGBO(112, 182, 1, 1),
+                                  ),
+                                  padding: EdgeInsets.all(15),
+                                  child: Icon(
+                                    Icons.check,
+                                    size: 50,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ).show();
+                            },
+                            child: Text('Save',
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w500,
+                                )),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                   setTitleController.clear();
                   setDescriptionController.clear();
-                  Navigator.of(context).pop();
                 } else {
                   _wrongshowSnackbarWithDialog(
                       "Title and description cannot be empty. Please try again.");
                 }
               },
-              child: const Text("Save"),
+              child: Text(
+                "Save",
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ),
           ],
         );
@@ -494,9 +692,9 @@ class _FlashcardsState extends State<FlashcardsMain> {
                               setDescriptionController.clear();
                               Navigator.of(context).pop();
                             },
-                            child: const Text('Cancel',
+                            child: Text('Cancel',
                                 style: TextStyle(
-                                  fontSize: 13,
+                                  fontSize: 14.sp,
                                   fontFamily: 'Montserrat',
                                   fontWeight: FontWeight.w500,
                                   color: Color.fromRGBO(84, 84, 94, 1),
@@ -517,7 +715,14 @@ class _FlashcardsState extends State<FlashcardsMain> {
                               Navigator.of(context).pop();
                               _saveFlashcardSet();
                             },
-                            child: const Text("Save"),
+                            child: Text(
+                              "Save",
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -571,7 +776,7 @@ class _FlashcardsState extends State<FlashcardsMain> {
                       );
                     },
                     child: SizedBox(
-                      height: 145,
+                      height: 148,
                       child: Card(
                         color: Color.fromRGBO(250, 249, 246, 1),
                         margin: const EdgeInsets.symmetric(
@@ -625,8 +830,7 @@ class _FlashcardsState extends State<FlashcardsMain> {
                                         value: 'edit',
                                         child: Row(
                                           children: [
-                                            Icon(Icons.edit,
-                                                size: 18.5),
+                                            Icon(Icons.edit, size: 18.5),
                                             SizedBox(width: 10),
                                             Text('Edit',
                                                 textScaleFactor: 1,
@@ -641,8 +845,7 @@ class _FlashcardsState extends State<FlashcardsMain> {
                                         value: 'add_cards',
                                         child: Row(
                                           children: [
-                                            Icon(Icons.add,
-                                                size: 18.5),
+                                            Icon(Icons.add, size: 18.5),
                                             SizedBox(width: 10),
                                             Text('Add Cards',
                                                 textScaleFactor: 1,
@@ -657,8 +860,7 @@ class _FlashcardsState extends State<FlashcardsMain> {
                                         value: 'delete',
                                         child: Row(
                                           children: [
-                                            Icon(Icons.delete,
-                                            size: 18.5),
+                                            Icon(Icons.delete, size: 18.5),
                                             SizedBox(width: 10),
                                             Text('Delete',
                                                 textScaleFactor: 1,

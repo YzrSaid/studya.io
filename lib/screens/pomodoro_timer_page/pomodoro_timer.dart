@@ -230,14 +230,8 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
     alarmAudioPlayer.playAlarmSound(soundName, volume);
 
     AwesomeDialog(
-      padding: EdgeInsets.only(bottom: 15),
+      padding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
       dismissOnTouchOutside: false,
-      buttonsTextStyle: const TextStyle(
-        color: Colors.white,
-        fontSize: 15,
-        fontFamily: 'Montserrat',
-        fontWeight: FontWeight.bold,
-      ),
       dialogBorderRadius: BorderRadius.circular(10),
       buttonsBorderRadius: BorderRadius.circular(10),
       context: context,
@@ -272,6 +266,12 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
         ],
       ),
       btnOkText: 'Okay',
+      buttonsTextStyle: TextStyle(
+        fontSize: 14.sp,
+        color: Colors.white,
+        fontFamily: 'Montserrat',
+        fontWeight: FontWeight.w600,
+      ),
       btnOkColor: okBtnColor,
       btnOkOnPress: () {
         // Stop the alarm sound when the user clicks "Okay"

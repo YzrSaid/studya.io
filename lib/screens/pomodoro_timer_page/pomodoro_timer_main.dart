@@ -258,9 +258,7 @@ class PomodoroTimerMain extends StatelessWidget {
                                                           Navigator.of(dialogContext)
                                                               .pop();
                                                           AwesomeDialog(
-                                                            padding:
-                                                            const EdgeInsets
-                                                                .only(bottom: 10),
+                                                            padding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
                                                             bodyHeaderDistance: 30,
                                                             width: 400,
                                                             buttonsBorderRadius:
@@ -277,24 +275,30 @@ class PomodoroTimerMain extends StatelessWidget {
                                                             titleTextStyle: TextStyle(
                                                               color: Color.fromRGBO(
                                                                   0, 0, 0, 0.803921568627451),
-                                                              fontSize: 20,
+                                                              fontSize: 20.sp,
                                                               fontFamily: 'Montserrat',
                                                               fontWeight: FontWeight.bold,
                                                             ),
                                                             desc:
                                                             'The session has been deleted successfully!',
                                                             descTextStyle:
-                                                            const TextStyle(
+                                                            TextStyle(
                                                               color: Color.fromRGBO(
                                                                   81, 81, 81, 1),
                                                               fontFamily: 'Montserrat',
                                                               fontWeight: FontWeight.w500,
-                                                              fontSize: 14,
+                                                              fontSize: 14.sp,
                                                             ),
                                                             btnOkOnPress: () {},
                                                             btnOkColor: Color.fromRGBO(
                                                                 112, 182, 1, 1),
                                                             btnOkText: 'Okay',
+                                                            buttonsTextStyle: TextStyle(
+                                                              fontSize: 14.sp,
+                                                              color: Colors.white,
+                                                              fontFamily: 'Montserrat',
+                                                              fontWeight: FontWeight.w600,
+                                                            ),
                                                             customHeader: Container(
                                                               decoration:
                                                               BoxDecoration(

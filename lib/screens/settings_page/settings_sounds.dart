@@ -40,64 +40,68 @@ class _SettingsSoundsState extends State<SettingsSounds> {
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          const SizedBox(width: 80),
-                          Expanded(
-                            child: DropdownButton<String>(
-                              isExpanded: true,
-                              dropdownColor:
-                              const Color.fromRGBO(250, 249, 246, 1),
-                              elevation: 0,
-                              style: TextStyle(
-                                color: Color.fromRGBO(84, 84, 84, 1),
-                                fontSize: 14.sp,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w500,
+                          const Spacer(),
+                          SizedBox(
+                            width: 145.w,
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 8).r,
+                              child: DropdownButton<String>(
+                                isExpanded: true,
+                                dropdownColor:
+                                const Color.fromRGBO(250, 249, 246, 1),
+                                elevation: 0,
+                                style: TextStyle(
+                                  color: Color.fromRGBO(84, 84, 84, 1),
+                                  fontSize: 14.sp,
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                items: [
+                                  DropdownMenuItem(
+                                    value: 'Sound 1',
+                                    child: Text('Default',
+                                    style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: 'Sound 2',
+                                    child: Text('Digital Beep',
+                                      style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500,
+                                      ),),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: 'Sound 3',
+                                    child: Text('Bliss',
+                                      style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500,
+                                      ),),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: 'Sound 4',
+                                    child: Text('Classic',
+                                      style: TextStyle(
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500,
+                                      ),),
+                                  ),
+                                ],
+                                onChanged: (newValue) {
+                                  if (newValue != null) {
+                                    // Change the alarm sound in AdditionalSettingsModel
+                                    additionalSettingsValue.setAlarmSound(newValue);
+                                  }
+                                },
+                                value: additionalSettingsValue.alarmSound,
                               ),
-                              items: [
-                                DropdownMenuItem(
-                                  value: 'Sound 1',
-                                  child: Text('Default',
-                                  style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w500,
-                                  ),),
-                                ),
-                                DropdownMenuItem(
-                                  value: 'Sound 2',
-                                  child: Text('Digital Beep',
-                                    style: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),),
-                                ),
-                                DropdownMenuItem(
-                                  value: 'Sound 3',
-                                  child: Text('Bliss',
-                                    style: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),),
-                                ),
-                                DropdownMenuItem(
-                                  value: 'Sound 4',
-                                  child: Text('Classic',
-                                    style: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),),
-                                ),
-                              ],
-                              onChanged: (newValue) {
-                                if (newValue != null) {
-                                  // Change the alarm sound in AdditionalSettingsModel
-                                  additionalSettingsValue.setAlarmSound(newValue);
-                                }
-                              },
-                              value: additionalSettingsValue.alarmSound,
                             ),
                           )
                         ],
@@ -118,8 +122,8 @@ class _SettingsSoundsState extends State<SettingsSounds> {
                           ),
                           const Spacer(),
 
-                          Container(
-                            width: 127.w,
+                          SizedBox(
+                            width: 155.w,
                             child: SliderTheme(
                               data: SliderTheme.of(context).copyWith(
                                 trackHeight: 6.5, // Customize track height

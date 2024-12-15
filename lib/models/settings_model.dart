@@ -6,6 +6,9 @@ import 'package:hive/hive.dart';
 class SettingsModel extends ChangeNotifier {
   // Profile settings
   String _userName = 'User'; // Default name
+  bool _isOnboardingComplete = false;
+
+  bool get isOnboardingComplete => _isOnboardingComplete;
   String get userName => _userName;
 
   // Load the username from Hive when the app starts
@@ -14,6 +17,21 @@ class SettingsModel extends ChangeNotifier {
     _userName = box.get('userName', defaultValue: 'Ferson');
     notifyListeners();
   }
+
+  // Load the statusfrom Hive when the app starts
+  Future<void> checkOnBoardingScreenStatus() async {
+    var box = await Hive.openBox('ProfileSettings');
+    _isOnboardingComplete = box.get('ProfileSettings', defaultValue: false);
+    notifyListeners();
+  }
+
+  Future<void> changeStatus(bool newStatus) async {
+    var box = await Hive.openBox('ProfileSettings');
+    await box.put('isOnboardingComplete', newStatus); // Correct key here
+    _isOnboardingComplete = newStatus;
+    notifyListeners(); // Notify listeners about the update
+  }
+
 
   // Save the username to Hive
   Future<void> changeUserName(String newName) async {

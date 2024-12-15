@@ -10,7 +10,6 @@ import 'package:studya_io/screens/main_nav_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:studya_io/screens/pomodoro_timer_page/create_pomodoro_timer/hive_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:studya_io/screens/pomodoro_timer_page/start_pomodoro_timer/add_timer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,13 +19,12 @@ void main() async {
 
   // Register Hive adapters
   Hive.registerAdapter(HiveModelAdapter());
-   Hive.registerAdapter(FlashcardSetAdapter());
-   Hive.registerAdapter(FlashcardAdapter());
+  Hive.registerAdapter(FlashcardSetAdapter());
+  Hive.registerAdapter(FlashcardAdapter());
 
   // Open Hive boxes
   await Hive.openBox<HiveModel>('studSession');
   await Hive.openBox('ProfileSettings');
-
   await Hive.openBox<FlashcardSet>('flashcardSetsBox');
   await Hive.openBox<Flashcard>('flashcardsBox');
 
@@ -36,19 +34,26 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
+  // Get onboarding status
+  var box = await Hive.openBox('ProfileSettings');
+  bool isOnboardingComplete = box.get('isOnboardingComplete', defaultValue: false) ?? false;
+  print(isOnboardingComplete);
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AdditionalSettingsModel()),
         ChangeNotifierProvider(create: (context) => SettingsModel()),
       ],
-      child: const MyApp(),
+      child: MyApp(isOnboardingComplete: isOnboardingComplete),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool isOnboardingComplete;
+
+  const MyApp({super.key, required this.isOnboardingComplete});
 
   @override
   Widget build(BuildContext context) {
@@ -56,27 +61,27 @@ class MyApp extends StatelessWidget {
       designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (context, child) => MediaQuery(
-        data: MediaQuery.of(context).copyWith(
-          textScaleFactor: 1.0,  // Lock text scaling
-          // Optionally, disable other display settings here if necessary
-        ),
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            appBarTheme: const AppBarTheme(
-              color: Color.fromRGBO(241, 241, 241, 1),
-            ),
-            useMaterial3: true,
-            scaffoldBackgroundColor: const Color.fromRGBO(241, 241, 241, 1),
+      builder: (context, child) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          appBarTheme: const AppBarTheme(
+            color: Color.fromRGBO(241, 241, 241, 1),
           ),
-          initialRoute: '/home',
-          routes: {
-            // '/': (context) => const OnboardingScreen(),
-            '/home': (context) => const MainNavBar(),
-            // '/add_timer': (context) => const AddTimer(),
-          },
+          useMaterial3: true,
+          scaffoldBackgroundColor: const Color.fromRGBO(241, 241, 241, 1),
         ),
+        initialRoute: isOnboardingComplete ? '/home' : '/onboarding',
+        routes: {
+          '/onboarding': (context) => const OnboardingScreen(),
+          '/home': (context) => const MainNavBar(),
+        },
+        onUnknownRoute: (settings) {
+          return MaterialPageRoute(
+            builder: (context) => Scaffold(
+              body: Center(child: Text('Page not found')),
+            ),
+          );
+        },
       ),
     );
   }
