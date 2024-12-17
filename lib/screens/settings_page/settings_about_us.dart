@@ -47,11 +47,13 @@ class _SettingsAboutUsState extends State<SettingsAboutUs> {
                             return AlertDialog(
                               actions: [
                                 TextButton(
-                                  child: const Text(
+                                  child:  Text(
                                     'Close',
                                     style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontFamily: 'Monserrat',
+                                      fontWeight: FontWeight.w500,
                                       color: Color.fromRGBO(84, 84, 84, 1),
-                                      fontFamily: 'Montserrat',
                                     ),
                                   ),
                                   onPressed: () {
@@ -124,29 +126,54 @@ class _SettingsAboutUsState extends State<SettingsAboutUs> {
                                           IconButton(
                                             icon: FaIcon(FontAwesomeIcons.github),
                                             onPressed: () async {
-                                              final url = Uri.parse('https://github.com/YzrSaid');
-                                              if (await canLaunchUrl(url)) {
-                                                await launchUrl(url);
+                                              final Uri url = Uri.parse('https://github.com/YzrSaid');
+                                              try {
+                                                await launchUrl(
+                                                  url,
+                                                  mode: LaunchMode.externalApplication,
+                                                );
+                                              } catch (e) {
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                  SnackBar(content: Text('Could not launch the URL: $e')),
+                                                );
                                               }
                                             },
+
                                           ),
                                           IconButton(
                                             icon: Icon(Icons.email),
                                             onPressed: () async {
-                                              final url =
-                                              Uri.parse('mailto:said.mohammadaldrin.2021@gmail.com');
-                                              if (await canLaunchUrl(url)) {
-                                                await launchUrl(url);
+                                              final Uri emailUri = Uri(
+                                                scheme: 'mailto',
+                                                path: 'said.mohammadaldrin.2021@gmail.com',
+                                              );
+
+                                              try {
+                                                await launchUrl(
+                                                  emailUri,
+                                                  mode: LaunchMode.externalApplication,
+                                                );
+                                              } catch (e) {
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                  SnackBar(content: Text('Could not launch email client: $e')),
+                                                );
                                               }
                                             },
+
                                           ),
                                           IconButton(
                                             icon: FaIcon(FontAwesomeIcons.globe),
                                             onPressed: () async {
-                                              final url =
-                                              Uri.parse('https://yzrsaid.github.io/Basic-2048/');
-                                              if (await canLaunchUrl(url)) {
-                                                await launchUrl(url);
+                                              final Uri url = Uri.parse('https://yzrsaid.github.io/Basic-2048/');
+                                              try {
+                                                await launchUrl(
+                                                  url,
+                                                  mode: LaunchMode.externalApplication,
+                                                );
+                                              } catch (e) {
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                  SnackBar(content: Text('Could not launch the URL: $e')),
+                                                );
                                               }
                                             },
                                           ),
@@ -188,22 +215,38 @@ class _SettingsAboutUsState extends State<SettingsAboutUs> {
                                           IconButton(
                                             icon: FaIcon(FontAwesomeIcons.github),
                                             onPressed: () async {
-                                              final url = Uri.parse(
-                                                  'https://github.com/JohnMulaPogi'); // Partner's GitHub
-                                              if (await canLaunchUrl(url)) {
-                                                await launchUrl(url);
+                                              final Uri url = Uri.parse('https://github.com/JohnMulaPogi');
+                                              try {
+                                                await launchUrl(
+                                                  url,
+                                                  mode: LaunchMode.externalApplication,
+                                                );
+                                              } catch (e) {
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                  SnackBar(content: Text('Could not launch the URL: $e')),
+                                                );
                                               }
                                             },
                                           ),
                                           IconButton(
                                             icon: Icon(Icons.email),
-                                            onPressed: () async {
-                                              final url = Uri.parse(
-                                                  'mailto:said.mohammadaldrin.2021@gmail.com'); // Your Email
-                                              if (await canLaunchUrl(url)) {
-                                                await launchUrl(url);
-                                              }
-                                            },
+                                              onPressed: () async {
+                                                final Uri emailUri = Uri(
+                                                  scheme: 'mailto',
+                                                  path: 'johnbasilmula5@gmail.com',
+                                                );
+
+                                                try {
+                                                  await launchUrl(
+                                                    emailUri,
+                                                    mode: LaunchMode.externalApplication,
+                                                  );
+                                                } catch (e) {
+                                                  ScaffoldMessenger.of(context).showSnackBar(
+                                                    SnackBar(content: Text('Could not launch email client: $e')),
+                                                  );
+                                                }
+                                              },
                                           ),
                                         ],
                                       ),
@@ -341,9 +384,12 @@ class _SettingsAboutUsState extends State<SettingsAboutUs> {
                               ),
                               actions: [
                                 TextButton(
-                                  child: const Text(
+                                  child: Text(
                                     'Close',
                                     style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontFamily: 'Monserrat',
+                                      fontWeight: FontWeight.w500,
                                       color: Color.fromRGBO(84, 84, 84, 1),
                                     ),
                                   ),
@@ -359,7 +405,6 @@ class _SettingsAboutUsState extends State<SettingsAboutUs> {
                     ),
                   ],
                 ),
-                10.verticalSpace,
                 Row(
                   children: [
                     Text(

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
+import '../../alarm_audioplayer.dart';
+import '../../models/additionalsettings_model.dart';
+import '../../models/settings_model.dart';
 import 'titledescdb.dart';
 import 'flashcarddb.dart';
 import 'flashcard_set_page.dart';
@@ -54,7 +58,7 @@ class _FlashcardViewPageState extends State<FlashcardViewPage>
     setState(() {
       final flashcards = flashcardsBox.values
           .where((flashcard) =>
-              flashcard.flashcardSetId == widget.flashcardSet.title)
+              flashcard.flashcardSetId == widget.flashcardSet.id)
           .toList();
       final newIndex = currentIndex + direction;
       if (newIndex >= 0 && newIndex < flashcards.length) {
@@ -92,9 +96,21 @@ class _FlashcardViewPageState extends State<FlashcardViewPage>
   }
 
   void _flipCard() {
+    // Create an instance of AlarmAudioPlayer
+    final soundFXAudioPlayer = AlarmAudioPlayer();
+    // Assuming _settingsModel is your instance of AdditionalSettingsModel
+    double volume =
+        Provider.of<SettingsModel>(context, listen: false).volumeAlarmSound;
+    String soundName = 'Flashcard';
+
     if (isFlipped) {
+      // Play the fx sound
+      soundFXAudioPlayer.playSoundEffect(soundName, volume);
       _controller.reverse();
+
     } else {
+      // Play the fx sound
+      soundFXAudioPlayer.playSoundEffect(soundName, volume);
       _controller.forward();
     }
     setState(() {
@@ -145,7 +161,7 @@ class _FlashcardViewPageState extends State<FlashcardViewPage>
         builder: (context, Box<Flashcard> box, _) {
           final flashcards = box.values
               .where((flashcard) =>
-                  flashcard.flashcardSetId == widget.flashcardSet.title)
+                  flashcard.flashcardSetId == widget.flashcardSet.id)
               .toList();
 
           if (flashcards.isEmpty) {
@@ -302,7 +318,7 @@ class _FlashcardViewPageState extends State<FlashcardViewPage>
               // Padding inside the container
               margin: const EdgeInsets.only(bottom: 140),
               child: Text(
-                '${currentIndex + 1}/${flashcardsBox.values.where((flashcard) => flashcard.flashcardSetId == widget.flashcardSet.title).length}',
+                '${currentIndex + 1}/${flashcardsBox.values.where((flashcard) => flashcard.flashcardSetId == widget.flashcardSet.id).length}',
                 style: const TextStyle(
                   fontSize: 10,
                 ),
@@ -322,7 +338,7 @@ class _FlashcardViewPageState extends State<FlashcardViewPage>
                 onPressed: () {
                   final flashcards = flashcardsBox.values
                       .where((flashcard) =>
-                          flashcard.flashcardSetId == widget.flashcardSet.title)
+                          flashcard.flashcardSetId == widget.flashcardSet.id)
                       .toList();
                   if (currentIndex < flashcards.length - 1) {
                     _moveFlashcard(1);

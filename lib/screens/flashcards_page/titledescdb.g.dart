@@ -17,6 +17,7 @@ class FlashcardSetAdapter extends TypeAdapter<FlashcardSet> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return FlashcardSet(
+      id: fields[2] as String?,
       title: fields[0] as String,
       description: fields[1] as String,
     );

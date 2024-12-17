@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
 import 'package:studya_io/screens/settings_page/settings_about_us.dart';
-import 'package:studya_io/screens/settings_page/settings_contact_us.dart';
 import 'package:studya_io/screens/settings_page/settings_profile.dart';
 import 'package:studya_io/screens/settings_page/settings_sounds.dart';
 

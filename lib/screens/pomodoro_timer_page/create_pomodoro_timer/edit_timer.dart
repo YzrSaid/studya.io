@@ -665,7 +665,7 @@ class _EditTimerState extends State<EditTimer> {
                                   title: Text('Save Changes?',
                                       style: TextStyle(
                                         color: Color.fromRGBO(84, 84, 84, 1),
-                                        fontSize: 18.sp,
+                                        fontSize: 20.sp,
                                         fontFamily: 'Montserrat',
                                         fontWeight: FontWeight.w700,
                                       )),
@@ -797,16 +797,16 @@ class _EditTimerState extends State<EditTimer> {
       title: 'Success',
       titleTextStyle: TextStyle(
         color: Color.fromRGBO(0, 0, 0, 0.803921568627451),
-        fontSize: 20,
+        fontSize: 20.sp,
         fontFamily: 'Montserrat',
         fontWeight: FontWeight.bold,
       ),
       desc: 'Your changes have been saved successfully!',
-      descTextStyle: const TextStyle(
+      descTextStyle: TextStyle(
         color: Color.fromRGBO(81, 81, 81, 1),
         fontFamily: 'Montserrat',
         fontWeight: FontWeight.w500,
-        fontSize: 14,
+        fontSize: 14.sp,
       ),
       btnOkOnPress: () {
         Navigator.of(context)

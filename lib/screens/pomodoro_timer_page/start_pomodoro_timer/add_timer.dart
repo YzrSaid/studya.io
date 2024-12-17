@@ -361,9 +361,10 @@ class _AddTimerState extends State<AddTimer> {
                               'Custom',
                               style: TextStyle(
                                 color: Color.fromRGBO(84, 84, 84, 1),
-                                fontSize: 13.sp,
+                                fontSize: 13.9.sp,
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.w700,
+                                height: 1.5,
                               ),
                             ),
                           ),

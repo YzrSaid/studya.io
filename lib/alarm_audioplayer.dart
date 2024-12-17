@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 
 class AlarmAudioPlayer {
   final _audioplayer = AudioPlayer();
+  final _audioplayerEffect = AudioPlayer();
 
   // Play alarm sound with the given sound name and volume
   void playAlarmSound(String soundName, double volume) {
@@ -30,6 +31,23 @@ class AlarmAudioPlayer {
     _audioplayer.setReleaseMode(ReleaseMode.loop);
     _audioplayer.play(AssetSource(soundPath));
   }
+
+  void playSoundEffect(String soundName, double volume) {
+    // Get the sound path based on the sound name
+    String? soundPath;
+
+    switch (soundName) {
+      case 'Flashcard':
+        soundPath = 'alarm_sounds/flipcard.mp3';
+        break;
+      default:
+        return;
+    }
+
+    _audioplayerEffect.setVolume(volume); // Set the volume before playing
+    _audioplayerEffect.play(AssetSource(soundPath));
+  }
+
 
   // Stop the alarm sound
   void stopAlarmSound() {

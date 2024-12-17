@@ -2,15 +2,28 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:studya_io/screens/pomodoro_timer_page/create_pomodoro_timer/boxes.dart';
 import 'package:studya_io/screens/pomodoro_timer_page/create_pomodoro_timer/create_timer.dart';
 import 'package:studya_io/screens/pomodoro_timer_page/create_pomodoro_timer/edit_timer.dart';
 import 'package:studya_io/screens/pomodoro_timer_page/create_pomodoro_timer/hive_model.dart';
 import 'package:studya_io/screens/pomodoro_timer_page/pomodoro_timer.dart';
 import 'package:studya_io/screens/pomodoro_timer_page/start_pomodoro_timer/add_timer.dart';
 
-class PomodoroTimerMain extends StatelessWidget {
+
+class PomodoroTimerMain extends StatefulWidget {
   const PomodoroTimerMain({super.key});
+
+  @override
+  State<PomodoroTimerMain> createState() => _PomodoroTimerMainState();
+}
+
+class _PomodoroTimerMainState extends State<PomodoroTimerMain> {
+  late Box<HiveModel> studSession;
+
+  @override
+  void initState() {
+    super.initState();
+    studSession = Hive.box<HiveModel>('studSession');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,8 +112,8 @@ class PomodoroTimerMain extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 20),
               child: ValueListenableBuilder<Box<HiveModel>>(
-                valueListenable: Boxes.getStudSession().listenable(),
-                builder: (context, box, index) {
+                valueListenable: studSession.listenable(),
+                builder: (context, Box<HiveModel> box, _) {
                   final studSessions = box.values.toList().cast<HiveModel>();
                   if (box.isEmpty) {
                     return Center(
@@ -184,6 +197,7 @@ class PomodoroTimerMain extends StatelessWidget {
                                               ),
                                             ),
                                             onTap: () {
+                                              Navigator.of(context).pop(); // Close the dialog
                                               editStudSession(
                                                   context, studSession, index);
                                             },
@@ -204,158 +218,8 @@ class PomodoroTimerMain extends StatelessWidget {
                                               ),
                                             ),
                                             onTap: () {
-                                              showDialog(
-                                                context: context,
-                                                builder: (BuildContext dialogContext) {
-                                                  return AlertDialog(
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.circular(10),
-                                                    ),
-                                                    title: const Text(
-                                                      'Delete?',
-                                                      style: TextStyle(
-                                                        color: Color.fromRGBO(
-                                                            84, 84, 84, 1),
-                                                        fontSize: 20,
-                                                        fontFamily: 'Montserrat',
-                                                        fontWeight: FontWeight.w700,
-                                                      ),
-                                                    ),
-                                                    content: const SizedBox(
-                                                      width: 280.0,
-                                                      height: 50.0,
-                                                      child: Text(
-                                                        'Once deleted, this action cannot be undone.',
-                                                        style: TextStyle(
-                                                          color: Color.fromRGBO(
-                                                              84, 84, 84, 1),
-                                                          fontSize: 15,
-                                                          fontFamily: 'Montserrat',
-                                                          fontWeight: FontWeight.w500,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    actions: [
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          Navigator.of(dialogContext)
-                                                              .pop();
-                                                        },
-                                                        child: Text(
-                                                          'Cancel',
-                                                          style: TextStyle(
-                                                            color: Color.fromRGBO(
-                                                                84, 84, 94, 1),
-                                                            fontSize: 15,
-                                                            fontFamily: 'Montserrat',
-                                                            fontWeight: FontWeight.w500,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          box.deleteAt(index);
-                                                          Navigator.of(dialogContext)
-                                                              .pop();
-                                                          AwesomeDialog(
-                                                            padding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
-                                                            bodyHeaderDistance: 30,
-                                                            width: 400,
-                                                            buttonsBorderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                            context: context,
-                                                            headerAnimationLoop:
-                                                            false,
-                                                            dialogType:
-                                                            DialogType.noHeader,
-                                                            animType:
-                                                            AnimType.bottomSlide,
-                                                            title: 'Success',
-                                                            titleTextStyle: TextStyle(
-                                                              color: Color.fromRGBO(
-                                                                  0, 0, 0, 0.803921568627451),
-                                                              fontSize: 20.sp,
-                                                              fontFamily: 'Montserrat',
-                                                              fontWeight: FontWeight.bold,
-                                                            ),
-                                                            desc:
-                                                            'The session has been deleted successfully!',
-                                                            descTextStyle:
-                                                            TextStyle(
-                                                              color: Color.fromRGBO(
-                                                                  81, 81, 81, 1),
-                                                              fontFamily: 'Montserrat',
-                                                              fontWeight: FontWeight.w500,
-                                                              fontSize: 14.sp,
-                                                            ),
-                                                            btnOkOnPress: () {},
-                                                            btnOkColor: Color.fromRGBO(
-                                                                112, 182, 1, 1),
-                                                            btnOkText: 'Okay',
-                                                            buttonsTextStyle: TextStyle(
-                                                              fontSize: 14.sp,
-                                                              color: Colors.white,
-                                                              fontFamily: 'Montserrat',
-                                                              fontWeight: FontWeight.w600,
-                                                            ),
-                                                            customHeader: Container(
-                                                              decoration:
-                                                              BoxDecoration(
-                                                                borderRadius:
-                                                                BorderRadius
-                                                                    .circular(50),
-                                                                color: Color.fromRGBO(
-                                                                    112, 182, 1, 1),
-                                                              ),
-                                                              padding:
-                                                              const EdgeInsets
-                                                                  .all(15),
-                                                              child: const Icon(
-                                                                Icons.check,
-                                                                size: 50,
-                                                                color:
-                                                                Colors.white,
-                                                              ),
-                                                            ),
-                                                          ).show();
-                                                        },
-                                                        style: TextButton.styleFrom(
-                                                          backgroundColor:
-                                                          Color.fromRGBO(
-                                                              112, 182, 1, 1),
-                                                          foregroundColor:
-                                                          Colors.white,
-                                                          padding:
-                                                          const EdgeInsets
-                                                              .symmetric(
-                                                            horizontal: 26,
-                                                            vertical: 10.0,
-                                                          ),
-                                                          shape:
-                                                          RoundedRectangleBorder(
-                                                            borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                                8.0),
-                                                          ),
-                                                          elevation: 0,
-                                                        ),
-                                                        child: const Text(
-                                                          'Delete',
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 15,
-                                                            fontFamily: 'Montserrat',
-                                                            fontWeight:
-                                                            FontWeight.w500,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
+                                              Navigator.of(context).pop(); // Close the dialog
+                                              deleteTimerSession(context, box, index);
                                             },
                                           ),
                                         ),
@@ -422,4 +286,125 @@ class PomodoroTimerMain extends StatelessWidget {
       ),
     );
   }
+}
+// Method to show AwesomeDialog
+void deleteTimerSession(context, box, index) {
+  showDialog(
+    context: context,
+    builder: (BuildContext dialogContext) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        title: Text(
+          'Delete?',
+          style: TextStyle(
+            color: Color.fromRGBO(84, 84, 84, 1),
+            fontSize: 20.sp,
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        content: SizedBox(
+          width: 280.0,
+          height: 50.0,
+          child: Text(
+            'Once deleted, this action cannot be undone.',
+            style: TextStyle(
+              color: Color.fromRGBO(84, 84, 84, 1),
+              fontSize: 14.sp,
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop(); // Close the dialog
+            },
+            child: Text(
+              'Cancel',
+              style: TextStyle(
+                color: Color.fromRGBO(84, 84, 94, 1),
+                fontSize: 15,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop(); // Close the dialog
+              AwesomeDialog(
+                padding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
+                bodyHeaderDistance: 30,
+                width: 400,
+                buttonsBorderRadius: BorderRadius.circular(10),
+                context: context,
+                headerAnimationLoop: false,
+                dialogType: DialogType.noHeader,
+                animType: AnimType.bottomSlide,
+                title: 'Success',
+                titleTextStyle: TextStyle(
+                  color: Color.fromRGBO(0, 0, 0, 0.803921568627451),
+                  fontSize: 20.sp,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold,
+                ),
+                desc: 'The session has been deleted successfully!',
+                descTextStyle: TextStyle(
+                  color: Color.fromRGBO(81, 81, 81, 1),
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14.sp,
+                ),
+                btnOkOnPress: () {
+                  box.deleteAt(index); // Delete the item
+                },
+                btnOkColor: Color.fromRGBO(112, 182, 1, 1),
+                btnOkText: 'Okay',
+                buttonsTextStyle: TextStyle(
+                  fontSize: 14.sp,
+                  color: Colors.white,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w600,
+                ),
+                customHeader: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Color.fromRGBO(112, 182, 1, 1),
+                  ),
+                  padding: const EdgeInsets.all(15),
+                  child: const Icon(
+                    Icons.check,
+                    size: 50,
+                    color: Colors.white,
+                  ),
+                ),
+              ).show();
+            },
+            style: TextButton.styleFrom(
+              backgroundColor: Color.fromRGBO(112, 182, 1, 1),
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 10.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              elevation: 0,
+            ),
+            child: const Text(
+              'Delete',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 15,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
+      );
+    },
+  );
 }

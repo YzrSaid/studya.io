@@ -10,6 +10,7 @@ import 'package:studya_io/screens/main_nav_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:studya_io/screens/pomodoro_timer_page/create_pomodoro_timer/hive_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:studya_io/screens/pomodoro_timer_page/timer_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,6 +45,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (context) => AdditionalSettingsModel()),
         ChangeNotifierProvider(create: (context) => SettingsModel()),
+        ChangeNotifierProvider(create: (context) => TimerService()),
       ],
       child: MyApp(isOnboardingComplete: isOnboardingComplete),
     ),

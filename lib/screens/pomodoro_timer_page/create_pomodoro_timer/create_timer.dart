@@ -366,9 +366,10 @@ class _CreateTimerState extends State<CreateTimer> {
                           'Custom',
                           style: TextStyle(
                             color: Color.fromRGBO(84, 84, 84, 1),
-                            fontSize: 14,
+                            fontSize: 13.9.sp,
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.w700,
+                            height: 1.5,
                           ),
                         ),
                       ),
@@ -780,16 +781,16 @@ class _CreateTimerState extends State<CreateTimer> {
       title: 'Success',
       titleTextStyle: TextStyle(
         color: Color.fromRGBO(0, 0, 0, 0.803921568627451),
-        fontSize: 20,
+        fontSize: 20.sp,
         fontFamily: 'Montserrat',
         fontWeight: FontWeight.bold,
       ),
       desc: 'Session added successfully!',
-      descTextStyle: const TextStyle(
+      descTextStyle: TextStyle(
         color: Color.fromRGBO(81, 81, 81, 1),
         fontFamily: 'Montserrat',
         fontWeight: FontWeight.w500,
-        fontSize: 14,
+        fontSize: 13.sp,
       ),
       btnOkOnPress: () {
         Navigator.of(context)

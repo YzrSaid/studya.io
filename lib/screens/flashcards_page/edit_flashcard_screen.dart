@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
+import '../../alarm_audioplayer.dart';
+import '../../models/settings_model.dart';
 import 'flashcarddb.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 
@@ -50,9 +53,21 @@ class _EditFlashcardScreenState extends State<EditFlashcardScreen>
   }
 
   void _flipCard() {
+    // Create an instance of AlarmAudioPlayer
+    final soundFXAudioPlayer = AlarmAudioPlayer();
+    // Assuming _settingsModel is your instance of AdditionalSettingsModel
+    double volume =
+        Provider.of<SettingsModel>(context, listen: false).volumeAlarmSound;
+    String soundName = 'Flashcard';
+
     if (isFlipped) {
+      // Play the fx sound
+      soundFXAudioPlayer.playSoundEffect(soundName, volume);
       _controller.reverse();
+
     } else {
+      // Play the fx sound
+      soundFXAudioPlayer.playSoundEffect(soundName, volume);
       _controller.forward();
     }
     setState(() {

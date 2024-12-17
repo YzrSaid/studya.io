@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart'; // Import for generating unique IDs
+import '../../alarm_audioplayer.dart';
+import '../../models/settings_model.dart';
 import 'flashcarddb.dart';
 
 class AddCardsScreen extends StatefulWidget {
-  final String
-      flashcardSetId; // Accept the flashcard set ID to associate the flashcard with it
+  final String flashcardSetId;
 
   const AddCardsScreen({super.key, required this.flashcardSetId});
 
@@ -18,7 +20,7 @@ class AddCardsScreen extends StatefulWidget {
 
 class _AddCardsScreenState extends State<AddCardsScreen>
     with SingleTickerProviderStateMixin {
-  Color tempColor = Colors.white;
+  Color pickerColor = Colors.white;
   final TextEditingController questionController = TextEditingController();
   final TextEditingController answerController = TextEditingController();
   String question = "";
@@ -41,12 +43,26 @@ class _AddCardsScreenState extends State<AddCardsScreen>
     _animation = Tween<double>(begin: 0, end: 1).animate(_controller);
 
     flashcardsBox = Hive.box<Flashcard>('flashcardsBox');
+
+    // Use the cardColor directly for pickerColor
+    pickerColor = cardColor; // Store the initial color in pickerColor
   }
 
   void _flipCard() {
+    // Create an instance of AlarmAudioPlayer
+    final soundFXAudioPlayer = AlarmAudioPlayer();
+    // Assuming _settingsModel is your instance of AdditionalSettingsModel
+    double volume =
+        Provider.of<SettingsModel>(context, listen: false).volumeAlarmSound;
+    String soundName = 'Flashcard';
+
     if (isFlipped) {
+      // Play the fx sound
+      soundFXAudioPlayer.playSoundEffect(soundName, volume);
       _controller.reverse();
     } else {
+      // Play the fx sound
+      soundFXAudioPlayer.playSoundEffect(soundName, volume);
       _controller.forward();
     }
     setState(() {
@@ -85,13 +101,12 @@ class _AddCardsScreenState extends State<AddCardsScreen>
     }
   }
 
-
   void _saveFlashcard() {
     _setFlashcardContent();
 
     if (question.isNotEmpty && answer.isNotEmpty) {
       // Create a new flashcard
-      String flashcardId = const Uuid().v4();
+      String flashcardId = DateTime.now().millisecondsSinceEpoch.toString();
       Flashcard newCard = Flashcard(
         flashcardId: flashcardId,
         front: question,
@@ -99,7 +114,6 @@ class _AddCardsScreenState extends State<AddCardsScreen>
         color: cardColor.value,
         flashcardSetId: widget.flashcardSetId,
       );
-
       // Check for duplicates by content (both title and question)
       final duplicateByContent = flashcardsBox.values.any((card) {
         return card.front == newCard.front &&
@@ -139,7 +153,6 @@ class _AddCardsScreenState extends State<AddCardsScreen>
             fontSize: 14,
           ),
           btnOkOnPress: () {
-            // Close the dialog
           },
           btnOkColor: const Color.fromRGBO(112, 182, 1, 1),
           btnOkText: 'Okay',
@@ -150,7 +163,7 @@ class _AddCardsScreenState extends State<AddCardsScreen>
             ),
             padding: EdgeInsets.all(15),
             child: Icon(
-              Icons.warning_rounded,  // Warning icon
+              Icons.warning_rounded, // Warning icon
               size: 50,
               color: Colors.white,
             ),
@@ -193,7 +206,7 @@ class _AddCardsScreenState extends State<AddCardsScreen>
             ),
             padding: EdgeInsets.all(15),
             child: Icon(
-              Icons.warning_rounded,  // Warning icon
+              Icons.warning_rounded, // Warning icon
               size: 50,
               color: Colors.white,
             ),
@@ -217,59 +230,62 @@ class _AddCardsScreenState extends State<AddCardsScreen>
     }
   }
 
-
   void _pickColor() async {
-    Color selectedColor = cardColor;
     Color? newColor = await showDialog<Color?>(
-        context: context,
-        builder: (BuildContext context) {
-          Color tempColor = selectedColor;
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          title: Text(
+            'Pick a Color',
+            style: TextStyle(
+              fontFamily: 'Montserrat',
+              fontSize: 20.sp,
+              color: Color.fromRGBO(84, 84, 94, 1),
+              fontWeight: FontWeight.w600,
             ),
-            title: Text('Pick a Color',
+          ),
+          content: SingleChildScrollView(
+            child: ColorPicker(
+              pickerColor: pickerColor,
+              onColorChanged: (Color color) {
+                pickerColor = color;
+              },
+              showLabel: true,
+              pickerAreaHeightPercent: 0.7,
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                'Select',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
-                  fontSize: 20.sp,
+                  fontSize: 13.sp,
                   color: Color.fromRGBO(84, 84, 94, 1),
                   fontWeight: FontWeight.w600,
-                )),
-            content: SingleChildScrollView(
-              child: ColorPicker(
-                pickerColor: tempColor,
-                onColorChanged: (Color color) {
-                  tempColor = color;
-                },
-                showLabel: true,
-                pickerAreaHeightPercent: 0.7,
+                ),
               ),
+              onPressed: () {
+                Navigator.of(context)
+                    .pop(pickerColor); // Return the selected color
+              },
             ),
-            actions: <Widget>[
-              TextButton(
-                child: Text('Select',
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 13.sp,
-                      color: Color.fromRGBO(84, 84, 94, 1),
-                      fontWeight: FontWeight.w600,
-                    )),
-                onPressed: () {
-                  Navigator.of(context).pop(tempColor);
-                },
-              ),
-            ],
-          );
-        });
+          ],
+        );
+      },
+    );
 
     if (newColor != null) {
       setState(() {
         cardColor = newColor;
-        tempColor = newColor;  // Update tempColor to reflect the new selected color
+        pickerColor =
+            newColor; // Update pickerColor to reflect the selected color
       });
     }
   }
-
 
   @override
   void dispose() {
@@ -343,40 +359,40 @@ class _AddCardsScreenState extends State<AddCardsScreen>
                         alignment: Alignment.center,
                         child: isFront
                             ? TextSelectionTheme(
-                                data: TextSelectionThemeData(
-                                    selectionHandleColor:
-                                        Color.fromRGBO(84, 84, 94, 1)),
-                                child: TextField(
-                                  cursorHeight: 25,
-                                  cursorColor: Color.fromRGBO(84, 84, 94, 1),
-                                  controller: questionController,
-                                  decoration: const InputDecoration(
-                                    hintText: "FRONT SIDE\n(Question)",
-                                    border: InputBorder.none,
-                                    contentPadding: EdgeInsets.all(30.0),
-                                    hintStyle: TextStyle(color: Colors.white54),
-                                  ),
-                                  style: getTextStyle(cardColor),
-                                  maxLines: 7,
-                                  textAlign: TextAlign.center,
-                                ),
-                              )
+                          data: TextSelectionThemeData(
+                              selectionHandleColor:
+                              Color.fromRGBO(84, 84, 94, 1)),
+                          child: TextField(
+                            cursorHeight: 25,
+                            cursorColor: Color.fromRGBO(84, 84, 94, 1),
+                            controller: questionController,
+                            decoration: const InputDecoration(
+                              hintText: "FRONT SIDE\n(Question)",
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.all(30.0),
+                              hintStyle: TextStyle(color: Colors.white54),
+                            ),
+                            style: getTextStyle(cardColor),
+                            maxLines: 7,
+                            textAlign: TextAlign.center,
+                          ),
+                        )
                             : Transform(
-                                alignment: Alignment.center,
-                                transform: Matrix4.identity()..rotateY(3.1416),
-                                child: TextField(
-                                  controller: answerController,
-                                  decoration: const InputDecoration(
-                                    hintText: "BACK SIDE\n(Answer)",
-                                    border: InputBorder.none,
-                                    contentPadding: EdgeInsets.all(30.0),
-                                    hintStyle: TextStyle(color: Colors.white54),
-                                  ),
-                                  style: getTextStyle(cardColor),
-                                  maxLines: 7,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
+                          alignment: Alignment.center,
+                          transform: Matrix4.identity()..rotateY(3.1416),
+                          child: TextField(
+                            controller: answerController,
+                            decoration: const InputDecoration(
+                              hintText: "BACK SIDE\n(Answer)",
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.all(30.0),
+                              hintStyle: TextStyle(color: Colors.white54),
+                            ),
+                            style: getTextStyle(cardColor),
+                            maxLines: 7,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                       ),
                     );
                   },
@@ -397,7 +413,7 @@ class _AddCardsScreenState extends State<AddCardsScreen>
                     backgroundColor: Color.fromRGBO(234, 234, 234, 1.0),
                     foregroundColor: Colors.white,
                     padding:
-                        EdgeInsets.symmetric(horizontal: 26, vertical: 10.0),
+                    EdgeInsets.symmetric(horizontal: 26, vertical: 10.0),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),

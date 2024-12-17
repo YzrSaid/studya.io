@@ -15,7 +15,8 @@ class FlashcardSet {
   final String id; // Unique identifier for each flashcard set
 
   FlashcardSet({
+    String? id,
     required this.title,
     required this.description,
-  }) : id = const Uuid().v4(); // Generate a unique ID using Uuid
+  }) : id = id ?? DateTime.now().millisecondsSinceEpoch.toString();
 }

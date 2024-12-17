@@ -69,7 +69,7 @@ class _TasksTimerState extends State<TasksTimer> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(10, 4, 10, 8),
+            padding: const EdgeInsets.fromLTRB(15, 4, 15, 8),
             child: Container(
               decoration: BoxDecoration(
                 border: Border(
@@ -185,21 +185,21 @@ class _TasksTimerState extends State<TasksTimer> {
                                         return AlertDialog(
                                           shape: RoundedRectangleBorder(
                                               borderRadius: BorderRadius.circular(10)),
-                                          title: const Text('Delete Task?',
+                                          title: Text('Delete Task?',
                                               style: TextStyle(
                                                 color: Color.fromRGBO(84, 84, 84, 1),
-                                                fontSize: 20,
+                                                fontSize: 20.sp,
                                                 fontFamily: 'Montserrat',
                                                 fontWeight: FontWeight.w700,
                                               )),
                                           content: Container(
                                             width: 280.0,
                                             height: 50.0,
-                                            child: const Text(
+                                            child: Text(
                                                 'Once deleted, this action cannot be undone.',
                                                 style: TextStyle(
                                                   color: Color.fromRGBO(84, 84, 84, 1),
-                                                  fontSize: 15,
+                                                  fontSize: 14.sp,
                                                   fontFamily: 'Montserrat',
                                                   fontWeight: FontWeight.w500,
                                                 )),
@@ -498,16 +498,16 @@ class _TasksTimerState extends State<TasksTimer> {
       title: 'Error',
       titleTextStyle: TextStyle(
         color: Color.fromRGBO(0, 0, 0, 0.803921568627451),
-        fontSize: 20,
+        fontSize: 20.sp,
         fontFamily: 'Montserrat',
         fontWeight: FontWeight.bold,
       ),
       desc: 'This task is already added in the list.',
-      descTextStyle: const TextStyle(
+      descTextStyle: TextStyle(
         color: Color.fromRGBO(81, 81, 81, 1),
         fontFamily: 'Montserrat',
         fontWeight: FontWeight.w500,
-        fontSize: 14,
+        fontSize: 14.sp,
       ),
       btnOkOnPress: () {},
       btnOkColor: btnActive,
@@ -547,16 +547,16 @@ class _TasksTimerState extends State<TasksTimer> {
       title: title,
       titleTextStyle: TextStyle(
         color: Color.fromRGBO(0, 0, 0, 0.803921568627451),
-        fontSize: 20,
+        fontSize: 20.sp,
         fontFamily: 'Montserrat',
         fontWeight: FontWeight.bold,
       ),
       desc: desc,
-      descTextStyle: const TextStyle(
+      descTextStyle: TextStyle(
         color: Color.fromRGBO(81, 81, 81, 1),
         fontFamily: 'Montserrat',
         fontWeight: FontWeight.w500,
-        fontSize: 14,
+        fontSize: 14.sp,
       ),
       btnOkOnPress: () {},
       btnOkColor: btnActive,

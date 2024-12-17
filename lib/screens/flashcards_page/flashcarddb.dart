@@ -26,5 +26,5 @@ class Flashcard {
     required this.back,
     required this.color,
     required this.flashcardSetId,
-  }) : flashcardId = flashcardId ?? const Uuid().v4(); // Generate ID if not provided
+  }) : flashcardId = flashcardId ?? const Uuid().v4();
 }

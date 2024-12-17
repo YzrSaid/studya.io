@@ -90,7 +90,7 @@ class _FlashcardSetPageState extends State<FlashcardSetPage> {
 
             if (flashcard.flashcardSetId == widget.flashcardSet.title) {
               final flashcardIndex =
-                  flashcardsBox.values.toList().indexOf(flashcard);
+              flashcardsBox.values.toList().indexOf(flashcard);
               flashcardsBox.deleteAt(flashcardIndex);
             }
           }
@@ -127,7 +127,7 @@ class _FlashcardSetPageState extends State<FlashcardSetPage> {
         front: flashcardData['question'],
         back: flashcardData['answer'],
         color: flashcardData['color'].value,
-        flashcardSetId: widget.flashcardSet.title,
+        flashcardSetId: widget.flashcardSet.id,
       );
 
       final existingCards = flashcardsBox.values.where((card) {
@@ -207,12 +207,12 @@ class _FlashcardSetPageState extends State<FlashcardSetPage> {
                 builder: (context, Box<Flashcard> box, _) {
                   final flashcards = box.values
                       .where((flashcard) =>
-                          flashcard.flashcardSetId == widget.flashcardSet.title)
+                  flashcard.flashcardSetId == widget.flashcardSet.id)
                       .toList();
 
                   return GridView.builder(
                     gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
+                    const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       childAspectRatio: 1,
                       crossAxisSpacing: 10,
@@ -224,6 +224,8 @@ class _FlashcardSetPageState extends State<FlashcardSetPage> {
                       final question = flashcard.front;
                       final color = Color(flashcard.color);
 
+                      print(flashcard.color.toRadixString(16));
+
 
                       // Determine if the color is close to white
                       bool isWhite = color.red > 200 && color.green > 200 && color.blue > 200;
@@ -232,21 +234,15 @@ class _FlashcardSetPageState extends State<FlashcardSetPage> {
                         onTap: isDeleteMode
                             ? () => _selectFlashcard(index)
                             : () {
-                                print('Flashcard ID: ${flashcard.flashcardId}');
-                                _editFlashcard(flashcard, index);
-                              },
+                          print('Flashcard ID: ${flashcard.flashcardId}');
+                          _editFlashcard(flashcard, index);
+                        },
                         child: Card(
-                          elevation: 4,
+                          elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
-                            side: BorderSide(
-                              color: selectedFlashcards.contains(index)
-                                  ? Colors.green
-                                  : Colors.transparent,
-                              width: 3,
-                            ),
                           ),
-                          color: color,
+                          color: Colors.transparent,
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
@@ -310,7 +306,7 @@ class _FlashcardSetPageState extends State<FlashcardSetPage> {
               context,
               MaterialPageRoute(
                 builder: (context) =>
-                    AddCardsScreen(flashcardSetId: widget.flashcardSet.title),
+                    AddCardsScreen(flashcardSetId: widget.flashcardSet.id),
               ),
             );
 
