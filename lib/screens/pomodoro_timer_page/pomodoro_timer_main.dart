@@ -117,13 +117,16 @@ class _PomodoroTimerMainState extends State<PomodoroTimerMain> {
                   final studSessions = box.values.toList().cast<HiveModel>();
                   if (box.isEmpty) {
                     return Center(
-                      child: Text(
-                        "No sessions created.",
-                        textScaleFactor: 1,
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w500,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: Text(
+                          "No sessions created.",
+                          textScaleFactor: 1,
+                          style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     );

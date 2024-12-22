@@ -85,10 +85,10 @@ class _FlashcardSetPageState extends State<FlashcardSetPage> {
           for (var index in selectedFlashcards) {
             final flashcard = flashcardsBox.values
                 .where(
-                    (card) => card.flashcardSetId == widget.flashcardSet.title)
+                    (card) => card.flashcardSetId == widget.flashcardSet.id)
                 .toList()[index];
 
-            if (flashcard.flashcardSetId == widget.flashcardSet.title) {
+            if (flashcard.flashcardSetId == widget.flashcardSet.id) {
               final flashcardIndex =
               flashcardsBox.values.toList().indexOf(flashcard);
               flashcardsBox.deleteAt(flashcardIndex);
@@ -241,8 +241,14 @@ class _FlashcardSetPageState extends State<FlashcardSetPage> {
                           elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
+                            side: BorderSide(
+                              color: selectedFlashcards.contains(index)
+                                  ? Colors.red
+                                  : Colors.transparent,
+                              width: 3,
+                            ),
                           ),
-                          color: Colors.transparent,
+                          color: color,
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),

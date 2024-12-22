@@ -443,9 +443,9 @@ class _FlashcardsState extends State<FlashcardsMain> {
                 setDescriptionController.text.trim();
 
                 if (updatedTitle.isNotEmpty && updatedDescription.isNotEmpty) {
-                  // Check if the updated title already exists
+                  // Check if the updated title already exists excluding the current set.
                   bool titleExists = flashcardSetsBox.values.any(
-                          (flashcardSet) => flashcardSet.title == updatedTitle);
+                          (set) => set.title == updatedTitle && set.id != flashcardSet.id);
                   if (titleExists) {
                     AwesomeDialog(
                       padding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
@@ -510,7 +510,7 @@ class _FlashcardsState extends State<FlashcardsMain> {
                                 'These changes will be saved to this Flashcard set.',
                                 style: TextStyle(
                                   color: Color.fromRGBO(84, 84, 84, 1),
-                                  fontSize: 13.sp,
+                                  fontSize: 14.sp,
                                   fontFamily: 'Montserrat',
                                   fontWeight: FontWeight.w500,
                                 )),

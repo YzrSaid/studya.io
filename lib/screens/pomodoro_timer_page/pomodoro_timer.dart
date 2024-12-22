@@ -134,6 +134,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
       });
     });
     isTimerPlaying = true;
+    print(_isAutoStart);
   }
 
   void _onTimerComplete() {
@@ -227,64 +228,72 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
     String soundName =
         Provider.of<AdditionalSettingsModel>(context, listen: false).alarmSound;
 
-    // Play the alarm sound
-    alarmAudioPlayer.playAlarmSound(soundName, volume);
+    if (_isAutoStart) {
+      setState(() {
+        _currentState = nextState;
+      });
+      _startTimer();
+    } else {
+      // Play the alarm sound
+      alarmAudioPlayer.playAlarmSound(soundName, volume);
 
-    AwesomeDialog(
-      padding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
-      dismissOnTouchOutside: false,
-      dialogBorderRadius: BorderRadius.circular(10),
-      buttonsBorderRadius: BorderRadius.circular(10),
-      context: context,
-      dialogType: DialogType.noHeader,
-      width: 400,
-      animType: AnimType.bottomSlide,
-      body: Column(
-        children: [
-          Text('You are doing great!',
-              style: TextStyle(
-                color: textColor,
-                fontSize: 16.sp,
-                fontFamily: 'Montserrat',
-                fontWeight: FontWeight.bold,
-              )),
-          const SizedBox(height: 15),
-          Image.asset(
-            'assets/images/alarm.png',
-            width: 100,
-            height: 100,
-            color: alarmColor,
-          ),
-          SizedBox(height: 10),
-          Text(text2.data!,
-              style: TextStyle(
-                color: text2Color,
-                fontSize: 13.sp,
-                fontFamily: 'Montserrat',
-                fontWeight: FontWeight.bold,
-              )),
-          SizedBox(height: 15),
-        ],
-      ),
-      btnOkText: 'Okay',
-      buttonsTextStyle: TextStyle(
-        fontSize: 14.sp,
-        color: Colors.white,
-        fontFamily: 'Montserrat',
-        fontWeight: FontWeight.w600,
-      ),
-      btnOkColor: okBtnColor,
-      btnOkOnPress: () {
-        // Stop the alarm sound when the user clicks "Okay"
-        alarmAudioPlayer.stopAlarmSound();
+      AwesomeDialog(
+        padding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
+        dismissOnTouchOutside: false,
+        dialogBorderRadius: BorderRadius.circular(10),
+        buttonsBorderRadius: BorderRadius.circular(10),
+        context: context,
+        dialogType: DialogType.noHeader,
+        width: 400,
+        animType: AnimType.bottomSlide,
+        body: Column(
+          children: [
+            Text('You are doing great!',
+                style: TextStyle(
+                  color: textColor,
+                  fontSize: 16.sp,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold,
+                )),
+            const SizedBox(height: 15),
+            Image.asset(
+              'assets/images/alarm.png',
+              width: 100,
+              height: 100,
+              color: alarmColor,
+            ),
+            SizedBox(height: 10),
+            Text(text2.data!,
+                style: TextStyle(
+                  color: text2Color,
+                  fontSize: 13.sp,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold,
+                )),
+            SizedBox(height: 15),
+          ],
+        ),
+        btnOkText: 'Okay',
+        buttonsTextStyle: TextStyle(
+          fontSize: 14.sp,
+          color: Colors.white,
+          fontFamily: 'Montserrat',
+          fontWeight: FontWeight.w600,
+        ),
+        btnOkColor: okBtnColor,
+        btnOkOnPress: () {
+          // Stop the alarm sound when the user clicks "Okay"
+          alarmAudioPlayer.stopAlarmSound();
 
-        // Switch to the next state and start the timer
-        setState(() {
-          _currentState = nextState;
-        });
-        _startTimer();
-      },
-    ).show();
+          // Switch to the next state and start the timer
+          setState(() {
+            _currentState = nextState;
+          });
+          _startTimer();
+        },
+      ).show();
+    }
+
   }
 
   void pausePomodoroTimer() {
@@ -410,6 +419,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
               Navigator.of(context).pop(true);
               Navigator.of(context).pop(true);
               print(_sessionKey);
+
             },
             child: Text('Proceed',
                 style: TextStyle(
